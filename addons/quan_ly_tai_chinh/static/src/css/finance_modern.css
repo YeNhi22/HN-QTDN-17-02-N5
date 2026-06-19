@@ -1,9 +1,17 @@
-/* ============================================
-   FINANCE MODERN UI - quan_ly_tai_chinh
-   Odoo 15 compatible - No @import, standalone
-   ============================================ */
+/* Finance Modern UI - VIP + GPU Optimized (Green theme) */
 
-/* ---- LIST VIEW: Header gradient (green theme) ---- */
+.o_list_view .o_list_table {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
+    animation: financeIn 0.4s ease;
+}
+
+@keyframes financeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 .o_list_view .o_list_table thead {
     background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
 }
@@ -12,185 +20,132 @@
     color: #fff !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    padding: 14px 12px !important;
+    letter-spacing: 0.6px !important;
+    padding: 15px 13px !important;
     border: none !important;
-    white-space: nowrap;
+    font-size: 0.8rem !important;
 }
 
-/* Fix hover - giữ chữ trắng, không underline */
 .o_list_view .o_list_table thead th:hover,
-.o_list_view .o_list_table thead th:hover span,
-.o_list_view .o_list_table thead th:hover a,
-.o_list_view .o_list_table thead th:hover * {
+.o_list_view .o_list_table thead th:hover *,
+.o_list_view .o_list_table thead th a,
+.o_list_view .o_list_table thead th a:hover {
     color: #fff !important;
     text-decoration: none !important;
 }
 
 .o_list_view .o_list_table thead th.o_column_sortable:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    cursor: pointer;
+    background: rgba(255,255,255,0.12) !important;
 }
 
-.o_list_view .o_list_table thead th a,
-.o_list_view .o_list_table thead th a:hover,
-.o_list_view .o_list_table thead th a:visited {
-    color: #fff !important;
-    text-decoration: none !important;
-}
-
-/* ---- LIST VIEW: Body ---- */
-.o_list_view .o_list_table tbody tr:hover {
-    background: rgba(17, 153, 142, 0.05) !important;
-}
-
+.o_list_view .o_list_table tbody tr { transition: background 0.15s ease; }
+.o_list_view .o_list_table tbody tr:hover { background: rgba(17,153,142,0.06) !important; }
 .o_list_view .o_list_table tbody td {
-    padding: 12px !important;
+    padding: 13px !important;
     vertical-align: middle !important;
     border-bottom: 1px solid #f0f0f0 !important;
 }
 
-.o_list_view .o_list_table {
-    border-radius: 12px !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* ---- FORM VIEW ---- */
 .o_form_view .o_form_sheet {
     background: #fff !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.09) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
     padding: 28px !important;
+    animation: financeIn 0.4s ease;
 }
 
 .o_form_view .o_form_label {
-    font-weight: 600 !important;
-    color: #374151 !important;
-    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: #4a5568 !important;
+    font-size: 0.82rem !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.4px !important;
+    letter-spacing: 0.5px !important;
 }
 
 .o_form_view .o_field_widget input,
 .o_form_view .o_field_widget select,
 .o_form_view .o_field_widget textarea {
-    border: 1.5px solid #e5e7eb !important;
-    border-radius: 8px !important;
-    padding: 8px 12px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 9px 14px !important;
     transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
-
 .o_form_view .o_field_widget input:focus,
 .o_form_view .o_field_widget select:focus,
 .o_form_view .o_field_widget textarea:focus {
     border-color: #11998e !important;
-    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.12) !important;
+    box-shadow: 0 0 0 4px rgba(17,153,142,0.12) !important;
     outline: none !important;
 }
 
-/* ---- STATUS BUTTON (green theme) ---- */
 .o_statusbar_status .o_arrow_button.btn-primary {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+    background: linear-gradient(135deg, #11998e, #38ef7d) !important;
     border-color: transparent !important;
     color: #fff !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(17,153,142,0.35) !important;
 }
 
-/* ---- SAVE BUTTON ---- */
 .o_form_view .btn-primary,
 .o_form_view .o_form_button_save {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+    background: linear-gradient(135deg, #11998e, #38ef7d) !important;
     border: none !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
     color: #fff !important;
-    box-shadow: 0 2px 8px rgba(17, 153, 142, 0.35) !important;
-}
-
-.o_form_view .btn-primary:hover,
-.o_form_view .o_form_button_save:hover {
-    box-shadow: 0 4px 16px rgba(17, 153, 142, 0.5) !important;
-}
-
-/* ---- NOTEBOOK TABS ---- */
-.o_notebook .nav-tabs .nav-link {
-    border-radius: 8px 8px 0 0 !important;
-    font-weight: 600 !important;
-    color: #6b7280 !important;
-    border: 1.5px solid #e5e7eb !important;
-    background: #f9fafb !important;
-    padding: 10px 20px !important;
-    transition: all 0.2s ease !important;
-}
-
-.o_notebook .nav-tabs .nav-link.active {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
-    border-color: transparent !important;
-    color: #fff !important;
-    box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3) !important;
-}
-
-/* ---- BADGES ---- */
-.badge.badge-success { background: #10b981 !important; color: #fff !important; }
-.badge.badge-warning { background: #f59e0b !important; color: #fff !important; }
-.badge.badge-danger  { background: #ef4444 !important; color: #fff !important; }
-.badge.badge-info    { background: #3b82f6 !important; color: #fff !important; }
-
-.badge {
-    border-radius: 20px !important;
-    padding: 4px 12px !important;
-    font-weight: 600 !important;
-    font-size: 0.8rem !important;
-}
-
-/* ---- KANBAN ---- */
-.o_kanban_record {
-    border-radius: 12px !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 14px rgba(17,153,142,0.35) !important;
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
-
-.o_kanban_record:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 8px 24px rgba(17, 153, 142, 0.25) !important;
+.o_form_view .btn-primary:hover,
+.o_form_view .o_form_button_save:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 22px rgba(17,153,142,0.45) !important;
 }
 
-/* ---- STAT BUTTONS ---- */
+.o_notebook .nav-tabs .nav-link {
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: 700 !important;
+    color: #718096 !important;
+    border: 2px solid #e2e8f0 !important;
+    background: #f7f8fc !important;
+    padding: 10px 22px !important;
+    transition: background 0.2s ease, color 0.2s ease !important;
+}
+.o_notebook .nav-tabs .nav-link.active {
+    background: linear-gradient(135deg, #11998e, #38ef7d) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(17,153,142,0.35) !important;
+}
+
+.badge { border-radius: 20px !important; padding: 5px 13px !important; font-weight: 700 !important; font-size: 0.78rem !important; }
+.badge.badge-success { background: linear-gradient(135deg,#11998e,#38ef7d) !important; color:#fff !important; }
+.badge.badge-warning { background: linear-gradient(135deg,#f59e0b,#fbbf24) !important; color:#fff !important; }
+.badge.badge-danger  { background: linear-gradient(135deg,#ef4444,#f5576c) !important; color:#fff !important; }
+.badge.badge-info    { background: linear-gradient(135deg,#4facfe,#00f2fe) !important; color:#fff !important; }
+
+.o_kanban_record {
+    border-radius: 16px !important;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.08) !important;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease !important;
+    border-top: 3px solid #11998e !important;
+}
+.o_kanban_record:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 12px 32px rgba(17,153,142,0.2) !important;
+}
+
 .o_form_view .oe_stat_button {
     border-radius: 12px !important;
-    border: 1.5px solid #e5e7eb !important;
-    transition: all 0.2s ease !important;
+    border: 2px solid #e2e8f0 !important;
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
 }
-
 .o_form_view .oe_stat_button:hover {
     border-color: #11998e !important;
-    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.2) !important;
+    transform: translateY(-3px) scale(1.03) !important;
+    box-shadow: 0 6px 20px rgba(17,153,142,0.2) !important;
 }
 
-/* ---- MONETARY FIELD ---- */
-.o_field_monetary .o_field_number {
-    font-size: 1.4rem !important;
-    font-weight: 700 !important;
-    color: #11998e !important;
-}
-
-/* ---- ANIMATION ---- */
-@keyframes finance_fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.o_list_view .o_list_table {
-    animation: finance_fadeIn 0.35s ease;
-}
-
-.o_form_view .o_form_sheet {
-    animation: finance_fadeIn 0.35s ease;
-}
-
-/* ---- RESPONSIVE ---- */
-@media (max-width: 768px) {
-    .o_form_view .o_form_sheet { padding: 16px !important; }
-    .o_list_view .o_list_table tbody td { padding: 8px !important; }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
 }

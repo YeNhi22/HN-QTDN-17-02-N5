@@ -682,9 +682,6 @@ class DashboardTaiChinh(models.TransientModel):
                         'approved_count': len(approved_de_xuat),
                         'approved_value': sum(approved_de_xuat.mapped('tong_gia_tri'))
                     }))
-                        'approved_count': len(approved_de_xuat),
-                        'approved_value': sum(approved_de_xuat.mapped('tong_gia_tri'))
-                    }))
             
             record.department_distribution_ids = distributions
 

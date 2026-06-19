@@ -49,7 +49,7 @@
             # JS
             'q_trang_chu/static/src/js/dashboard.js',
             'q_trang_chu/static/src/js/messenger_chat.js',
-            'q_trang_chu/static/src/js/chatbot_page.js',
+            'q_trang_chu/static/src/js/chatbot_widget.js',
         ],
         'web.assets_qweb': [
             'q_trang_chu/static/src/xml/dashboard_templates.xml',
