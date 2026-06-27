@@ -175,19 +175,43 @@ Hãy trả lời câu hỏi trên một cách hữu ích và thân thiện."""
 
         # Phát hiện intent và xử lý
         intent = self._detect_intent(message)
-        
-        # Lấy context từ hệ thống
+
+        # ── Lấy context từ hệ thống ──────────────────────────────
         context = self._get_system_context(message, intent)
-        
-        # Lấy cấu hình chatbot
+
+        # ── Lấy cấu hình chatbot ──────────────────────────────────
         assistant = self.search([], limit=1)
         use_gemini = assistant.use_gemini if assistant else True
-        
-        # Thử gọi Gemini API nếu được bật
+
+        # ── Quyết định có gọi Gemini không ───────────────────────
+        # Chỉ gọi Gemini khi câu hỏi THỰC SỰ cần AI phân tích:
+        #   - Không thuộc bất kỳ intent cụ thể nào (general)
+        #   - Câu hỏi đủ dài (> 20 ký tự) – tránh gọi cho "hi", "ok"
+        #   - Không phải chào hỏi / cảm ơn
+        RULE_BASED_INTENTS = {
+            'muon_tai_san', 'tra_tai_san', 'kiem_tra_lich',
+            'bao_hanh', 'thanh_ly', 'huong_dan',
+            'thong_ke', 'quy_trinh',
+        }
+        GREETING_KEYWORDS = ['xin chào', 'hello', 'hi', 'chào', 'hey',
+                             'cảm ơn', 'thank', 'thanks', 'tks', 'ok', 'oke']
+        is_greeting = any(g in message.lower() for g in GREETING_KEYWORDS)
+        is_short = len(message.strip()) <= 20
+        needs_ai = (
+            use_gemini
+            and assistant
+            and not is_greeting
+            and not is_short
+            and intent not in RULE_BASED_INTENTS  # intent đã có rule → không cần AI
+        )
+
         gemini_response = None
-        if use_gemini and assistant:
+        if needs_ai:
+            _logger.info(f"[Chatbot] Gọi Gemini API cho câu hỏi: '{message[:60]}...'")
             gemini_response = assistant._call_gemini_api(message, context)
-        
+        else:
+            _logger.info(f"[Chatbot] Dùng rule-based (intent={intent}, short={is_short}, greeting={is_greeting})")
+
         if gemini_response:
             response = {
                 'answer': gemini_response,

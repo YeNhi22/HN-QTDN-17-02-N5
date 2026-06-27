@@ -27,7 +27,6 @@
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'data/cron_muon_tra.xml',
-        'data/tai_san_demo.xml',
         'views/danh_muc_tai_san.xml',
         'views/kiem_ke_tai_san.xml',
         'views/lich_su_khau_hao.xml',
@@ -63,4 +62,7 @@
     
     'installable': True,
     'application': True,
+    'demo': [
+        'data/tai_san_demo.xml',
+    ],
 }

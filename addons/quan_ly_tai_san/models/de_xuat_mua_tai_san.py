@@ -28,6 +28,11 @@ class DeXuatMuaTaiSan(models.Model):
         'res.users', string='Người đề xuất',
         default=lambda self: self.env.user, tracking=True, ondelete='set null',
     )
+    nhan_vien_id = fields.Many2one(
+        'nhan_vien', string='Nhân viên đề xuất (HRM)',
+        tracking=True, ondelete='set null',
+        help='Dữ liệu gốc từ module HRM — phòng ban tự động đồng bộ.',
+    )
     phong_ban_id = fields.Many2one(
         'phong_ban', string='Phòng ban',
         ondelete='set null', tracking=True,
@@ -87,22 +92,41 @@ class DeXuatMuaTaiSan(models.Model):
                 self.env['ir.sequence'].next_by_code('de_xuat_mua_tai_san') or 'New'
             )
         if not vals.get('phong_ban_id') and vals.get('nguoi_de_xuat_id'):
-            nv = self.env['nhan_vien'].search([
-                ('user_id', '=', vals['nguoi_de_xuat_id']),
-            ], limit=1)
-            if nv and nv.phong_ban_hien_tai_id:
+            nv = self._resolve_nhan_vien_from_user(vals.get('nguoi_de_xuat_id'))
+            if nv:
+                vals['nhan_vien_id'] = nv.id
+                if nv.phong_ban_hien_tai_id:
+                    vals['phong_ban_id'] = nv.phong_ban_hien_tai_id.id
+        if vals.get('nhan_vien_id') and not vals.get('phong_ban_id'):
+            nv = self.env['nhan_vien'].browse(vals['nhan_vien_id'])
+            if nv.phong_ban_hien_tai_id:
                 vals['phong_ban_id'] = nv.phong_ban_hien_tai_id.id
         return super().create(vals)
 
+    @api.model
+    def _resolve_nhan_vien_from_user(self, user_id):
+        if not user_id:
+            return self.env['nhan_vien']
+        return self.env['nhan_vien'].search([('user_id', '=', user_id)], limit=1)
+
     @api.onchange('nguoi_de_xuat_id')
     def _onchange_nguoi_de_xuat_id(self):
-        """Tự động điền phòng ban từ HRM (Single Source of Truth)."""
+        """Tự động điền nhân viên và phòng ban từ HRM (Single Source of Truth)."""
         if self.nguoi_de_xuat_id:
-            nv = self.env['nhan_vien'].search([
-                ('user_id', '=', self.nguoi_de_xuat_id.id),
-            ], limit=1)
-            if nv and nv.phong_ban_hien_tai_id:
-                self.phong_ban_id = nv.phong_ban_hien_tai_id
+            nv = self._resolve_nhan_vien_from_user(self.nguoi_de_xuat_id.id)
+            if nv:
+                self.nhan_vien_id = nv
+                if nv.phong_ban_hien_tai_id:
+                    self.phong_ban_id = nv.phong_ban_hien_tai_id
+
+    @api.onchange('nhan_vien_id')
+    def _onchange_nhan_vien_id(self):
+        """Chọn nhân viên HRM → đồng bộ phòng ban và user Odoo."""
+        if self.nhan_vien_id:
+            if self.nhan_vien_id.phong_ban_hien_tai_id:
+                self.phong_ban_id = self.nhan_vien_id.phong_ban_hien_tai_id
+            if self.nhan_vien_id.user_id:
+                self.nguoi_de_xuat_id = self.nhan_vien_id.user_id
 
     def write(self, vals):
         """Ngăn thay đổi state sang approved/rejected trực tiếp"""
@@ -142,6 +166,20 @@ class DeXuatMuaTaiSan(models.Model):
             record._create_approval_request()
             record.state = 'waiting_approval'
             record.message_post(body=_('Đề xuất đã được gửi và tạo đơn phê duyệt tài chính.'))
+
+            self.env['system.event'].safe_emit(
+                'de_xuat.submitted',
+                f'Đề xuất {record.ma_de_xuat} đã gửi',
+                source_model='de_xuat_mua_tai_san',
+                source_id=record.id,
+                payload={
+                    'ma_de_xuat': record.ma_de_xuat,
+                    'ten_de_xuat': record.ten_de_xuat,
+                    'phong_ban': record.phong_ban_id.ten_phong_ban if record.phong_ban_id else '—',
+                    'tong_gia_tri': record.tong_gia_tri,
+                    'phe_duyet_id': record.phe_duyet_id.id if record.phe_duyet_id else False,
+                },
+            )
 
     def _create_approval_request(self):
         """Tạo đơn phê duyệt tự động ở module tài chính"""
@@ -186,6 +224,7 @@ class DeXuatMuaTaiSan(models.Model):
             'ten_de_xuat': self.ten_de_xuat or '',
             'ngay_de_xuat': self.ngay_de_xuat or fields.Date.today(),
             'nguoi_de_xuat_id': self.nguoi_de_xuat_id.id if self.nguoi_de_xuat_id else False,
+            'nhan_vien_id': self.nhan_vien_id.id if self.nhan_vien_id else False,
             'phong_ban_id': self.phong_ban_id.id if self.phong_ban_id else False,
             'tong_gia_tri': self.tong_gia_tri or 0.0,
             'don_vi_tien_te': self.don_vi_tien_te or 'vnd',

@@ -30,6 +30,7 @@
          'views/chuc_vu.xml',
          'views/lich_su_cong_tac.xml',
         'views/menu.xml',
+        'views/integration_views.xml',
     ],
     
     # Assets - Modern UI CSS

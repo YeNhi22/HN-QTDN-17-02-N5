@@ -11,3 +11,6 @@ access_chatbot_faq_user,chatbot.faq.user,model_chatbot_faq,base.group_user,1,0,0
 access_chatbot_faq_admin,chatbot.faq.admin,model_chatbot_faq,base.group_system,1,1,1,1
 access_chatbot_policy_user,chatbot.policy.user,model_chatbot_policy,base.group_user,1,0,0,0
 access_chatbot_policy_admin,chatbot.policy.admin,model_chatbot_policy,base.group_system,1,1,1,1
+access_invoice_ocr_result_user,invoice.ocr.result.user,model_invoice_ocr_result,base.group_user,1,1,1,0
+access_invoice_ocr_result_admin,invoice.ocr.result.admin,model_invoice_ocr_result,base.group_system,1,1,1,1
+access_invoice_ocr_wizard_user,invoice.ocr.wizard.user,model_invoice_ocr_wizard,base.group_user,1,1,1,1

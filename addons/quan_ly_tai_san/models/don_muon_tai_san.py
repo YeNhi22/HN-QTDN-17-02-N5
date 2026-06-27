@@ -493,6 +493,19 @@ class DonMuonTaiSan(models.Model):
             record.message_post(
                 body=_('📤 Đơn mượn đã gửi phê duyệt. Mã phiếu: %s') % muon_tra.ma_phieu_muon_tra
             )
+
+            self.env['system.event'].safe_emit(
+                'don_muon.submitted',
+                f'Đơn mượn {record.ma_don_muon} đã gửi',
+                source_model='don_muon_tai_san',
+                source_id=record.id,
+                payload={
+                    'ma_don_muon': record.ma_don_muon,
+                    'nhan_vien': record.nhan_vien_muon_id.ho_ten if record.nhan_vien_muon_id else '—',
+                    'ma_phieu': muon_tra.ma_phieu_muon_tra,
+                    'so_tai_san': record.so_tai_san,
+                },
+            )
     
     def action_huy(self):
         """Hủy đơn mượn"""

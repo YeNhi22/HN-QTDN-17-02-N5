@@ -73,6 +73,14 @@ class PheDuyetMuaTaiSan(models.Model):
         readonly=True,
         ondelete='set null'
     )
+
+    nhan_vien_id = fields.Many2one(
+        'nhan_vien',
+        string='Nhân viên đề xuất (HRM)',
+        readonly=True,
+        ondelete='set null',
+        help='Dữ liệu gốc từ module HRM',
+    )
     
     phong_ban_id = fields.Many2one(
         'phong_ban',
@@ -529,6 +537,19 @@ class PheDuyetMuaTaiSan(models.Model):
                        '💰 Đã ghi nhận giao dịch vào hệ thống tài chính\n'
                        '📊 Tài sản sẵn sàng cho: Tính khấu hao, Kiểm kê, Mượn trả, Thanh lý, Bảo trì') % asset_count,
                 subject=_('Phê duyệt hoàn tất')
+            )
+
+            self.env['system.event'].safe_emit(
+                'phe_duyet.approved',
+                f'Phê duyệt {record.ma_phe_duyet} hoàn tất',
+                source_model='phe_duyet_mua_tai_san',
+                source_id=record.id,
+                payload={
+                    'ma_phe_duyet': record.ma_phe_duyet,
+                    'so_tai_san': asset_count,
+                    'but_toan': record.but_toan_id.name if record.but_toan_id else '—',
+                    'tong_gia_tri': record.tong_gia_tri,
+                },
             )
     
     def action_reject(self):

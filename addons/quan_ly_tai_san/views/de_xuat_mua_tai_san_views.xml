@@ -76,7 +76,9 @@
                             <field name="ten_de_xuat" placeholder="Đề xuất mua laptop cho phòng IT..."/>
                             <field name="ngay_de_xuat"/>
                             <field name="nguoi_de_xuat_id" options="{'no_create': True}"/>
-                            <field name="phong_ban_id" options="{'no_create': True}"/>
+                            <field name="nhan_vien_id" options="{'no_create': True}"/>
+                            <field name="phong_ban_id" options="{'no_create': True}"
+                                   attrs="{'readonly': [('nhan_vien_id', '!=', False)]}"/>
                             <field name="ngay_du_kien_nhan"/>
                         </group>
                         <group string="Tài chính">

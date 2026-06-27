@@ -219,6 +219,18 @@ class MuonTraTaiSan(models.Model):
                 record.ma_don_muon_id.sync_from_muon_tra_approved(record)
             
             record.message_post(body=_('✅ Đơn mượn đã được duyệt bởi %s.') % self.env.user.name)
+
+            self.env['system.event'].safe_emit(
+                'muon_tra.approved',
+                f'Phiếu {record.ma_phieu_muon_tra} đã duyệt',
+                source_model='muon_tra_tai_san',
+                source_id=record.id,
+                payload={
+                    'ma_phieu': record.ma_phieu_muon_tra,
+                    'nhan_vien': record.nhan_vien_muon_id.ho_ten if record.nhan_vien_muon_id else '—',
+                    'so_tai_san': len(record.muon_tra_line_ids),
+                },
+            )
     
     def action_tu_choi_don(self):
         """Mở wizard từ chối đơn mượn"""

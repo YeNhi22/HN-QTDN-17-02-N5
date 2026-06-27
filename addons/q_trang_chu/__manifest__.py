@@ -24,6 +24,7 @@
         'base',
         'web',
         'mail',
+        'base_setup',
         'nhan_su',
         'quan_ly_tai_san',
         'quan_ly_tai_chinh',
@@ -41,6 +42,7 @@
         'data/chatbot_knowledge_data.xml',
         'views/dashboard_views.xml',  # Load views và actions trước
         'views/chatbot_views.xml',     # Load tất cả views và actions
+        'views/integration_views.xml', # OCR + Settings (Mức 3)
         'views/menu.xml',               # Load menu cuối cùng (menu tham chiếu actions)
     ],
 

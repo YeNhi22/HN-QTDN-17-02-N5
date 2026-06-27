@@ -3,3 +3,7 @@ access_nhan_vien,nhan_vien.nhan_vien,model_nhan_vien,base.group_user,1,1,1,1
 access_phong_ban,phong_ban.phong_ban,model_phong_ban,base.group_user,1,1,1,1
 access_chuc_vu,chuc_vu.chuc_vu,model_chuc_vu,base.group_user,1,1,1,1
 access_lich_su_cong_tac,lich_su_cong_tac.lich_su_cong_tac,model_lich_su_cong_tac,base.group_user,1,1,1,1
+access_hrm_sync_log,hrm.sync.log.user,model_hrm_sync_log,base.group_user,1,0,0,0
+access_hrm_sync_log_admin,hrm.sync.log.admin,model_hrm_sync_log,base.group_system,1,1,1,1
+access_system_event,system.event.user,model_system_event,base.group_user,1,0,0,0
+access_system_event_admin,system.event.admin,model_system_event,base.group_system,1,1,1,1

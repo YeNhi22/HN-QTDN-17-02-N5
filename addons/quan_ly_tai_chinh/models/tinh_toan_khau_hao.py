@@ -168,10 +168,14 @@ class TinhToanKhauHaoTuDong(models.Model):
         if self.tong_khau_hao_thang <= 0:
             raise UserError(_('Không có giá trị khấu hao để ghi sổ.'))
         
-        # Tìm sổ nhật ký
+        # Tìm hoặc tạo sổ nhật ký
         journal = self.env['account.journal'].search([('type', '=', 'general')], limit=1)
         if not journal:
-            raise UserError(_('Không tìm thấy sổ nhật ký chung.'))
+            journal = self.env['account.journal'].sudo().create({
+                'name': 'Nhật ký chung',
+                'code': 'MISC',
+                'type': 'general',
+            })
         
         # Tìm tài khoản chi phí khấu hao (6271)
         tk_chi_phi_kh = self.env['account.account'].search([
@@ -185,12 +189,34 @@ class TinhToanKhauHaoTuDong(models.Model):
             ('deprecated', '=', False)
         ], limit=1)
         
+        if not tk_chi_phi_kh:
+            user_type = (
+                self.env.ref('account.data_account_type_expenses', raise_if_not_found=False)
+                or self.env['account.account.type'].search([('type', '=', 'other')], limit=1)
+            )
+            if user_type:
+                tk_chi_phi_kh = self.env['account.account'].sudo().create({
+                    'code': '6271',
+                    'name': 'Chi phí khấu hao TSCĐ',
+                    'user_type_id': user_type.id,
+                })
+
+        if not tk_khau_hao_lk:
+            user_type = (
+                self.env.ref('account.data_account_type_depreciation', raise_if_not_found=False)
+                or self.env['account.account.type'].search([('type', '=', 'other')], limit=1)
+            )
+            if user_type:
+                tk_khau_hao_lk = self.env['account.account'].sudo().create({
+                    'code': '2141',
+                    'name': 'Hao mòn TSCĐ hữu hình',
+                    'user_type_id': user_type.id,
+                })
+
         if not tk_chi_phi_kh or not tk_khau_hao_lk:
             raise UserError(_(
-                'Không tìm thấy tài khoản khấu hao.\n'
-                'Vui lòng thiết lập:\n'
-                '- TK 6271: Chi phí khấu hao TSCĐ\n'
-                '- TK 2141: Hao mòn TSCĐ hữu hình'
+                'Không tìm thấy hoặc không tạo được tài khoản khấu hao.\n'
+                'Vui lòng cài module Kế toán và thiết lập sơ đồ tài khoản.'
             ))
         
         # Tạo bút toán tổng hợp
@@ -314,8 +340,26 @@ class TinhToanKhauHaoTuDong(models.Model):
         # Tự động tính toán
         record.action_calculate()
         
-        # Tự động ghi sổ (tùy chọn)
-        # record.action_create_journal_entries()
+        # Tự động ghi sổ (Mức 2 — Event-driven)
+        icp = self.env['ir.config_parameter'].sudo()
+        auto_post = icp.get_param('q_trang_chu.auto_post_depreciation', 'True')
+        if auto_post == 'True' and record.state == 'calculated' and record.tong_khau_hao_thang > 0:
+            try:
+                record.action_create_journal_entries()
+                move = record.but_toan_ids[:1]
+                self.env['system.event'].safe_emit(
+                    'khau_hao.posted',
+                    f'Khấu hao {record.thang_nam} đã ghi sổ',
+                    source_model='tinh.toan.khau.hao',
+                    source_id=record.id,
+                    payload={
+                        'thang_nam': record.thang_nam,
+                        'tong_khau_hao': record.tong_khau_hao_thang,
+                        'but_toan': move.name if move else '—',
+                    },
+                )
+            except Exception as exc:
+                _logger.warning('Auto-post depreciation failed: %s', exc)
         
         _logger.info(f'Đã tạo và tính toán khấu hao tháng {today.month}/{today.year}')
 

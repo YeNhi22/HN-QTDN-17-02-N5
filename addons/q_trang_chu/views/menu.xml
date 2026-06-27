@@ -59,6 +59,27 @@
             action="action_chatbot_conversation"
             sequence="10"/>
 
+        <!-- Mức 3: AI OCR -->
+        <menuitem
+            id="menu_ai_tools"
+            name="🧠 Công cụ AI"
+            parent="menu_root"
+            sequence="15"/>
+
+        <menuitem
+            id="menu_invoice_ocr"
+            name="📄 OCR Hóa đơn"
+            parent="menu_ai_tools"
+            action="action_invoice_ocr_wizard"
+            sequence="1"/>
+
+        <menuitem
+            id="menu_invoice_ocr_history"
+            name="📋 Lịch sử OCR"
+            parent="menu_ai_tools"
+            action="action_invoice_ocr_result"
+            sequence="2"/>
+
     </data>
 </odoo>
 
