@@ -60,11 +60,6 @@
         ],
     },
     
-    # Dữ liệu mẫu — chỉ load khi tạo DB có tick "Demo data"
-    'demo': [
-        'data/tai_san_demo.xml',
-    ],
-
     'installable': True,
     'application': True,
     'demo': [
