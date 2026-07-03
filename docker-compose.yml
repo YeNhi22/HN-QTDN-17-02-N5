@@ -1,0 +1,42 @@
+services:
+  postgres-odoo-base-15-04:
+    container_name: postgres_odoo-base-15-04
+    image: postgres:15
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres-odoo-data:/data/postgres
+    ports:
+      - "5434:5432"
+    restart: unless-stopped
+
+  # Odoo Server
+  odoo:
+    container_name: odoo_server
+    image: odoo:15.0
+    platform: linux/amd64
+    depends_on:
+      - postgres-odoo-base-15-04
+    environment:
+      - HOST=postgres-odoo-base-15-04
+      - PORT=5432
+      - USER=odoo
+      - PASSWORD=odoo
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - odoo-web-data:/var/lib/odoo
+      - ./odoo-docker.conf:/etc/odoo/odoo.conf:ro
+    ports:
+      - "8071:8069"
+    restart: unless-stopped
+
+volumes:
+  odoo-web-data:
+  postgres-odoo-data:

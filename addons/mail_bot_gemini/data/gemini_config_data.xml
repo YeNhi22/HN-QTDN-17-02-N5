@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Giá trị mặc định cho Gemini model -->
+    <record id="gemini_model_default" model="ir.config_parameter">
+        <field name="key">mail_bot_gemini.model</field>
+        <field name="value">gemini-1.5-flash</field>
+    </record>
+</odoo>

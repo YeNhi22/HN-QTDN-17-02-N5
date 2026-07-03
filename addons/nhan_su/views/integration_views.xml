@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- HRM Sync Log -->
+    <record id="view_hrm_sync_log_tree" model="ir.ui.view">
+        <field name="name">hrm.sync.log.tree</field>
+        <field name="model">hrm.sync.log</field>
+        <field name="arch" type="xml">
+            <tree string="Nhật ký đồng bộ HRM" create="false">
+                <field name="create_date" string="Thời gian"/>
+                <field name="nhan_vien_id"/>
+                <field name="phong_ban_cu_id"/>
+                <field name="phong_ban_moi_id"/>
+                <field name="module_dich"/>
+                <field name="trang_thai"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hrm_sync_log_form" model="ir.ui.view">
+        <field name="name">hrm.sync.log.form</field>
+        <field name="model">hrm.sync.log</field>
+        <field name="arch" type="xml">
+            <form string="Nhật ký đồng bộ HRM" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="create_date"/>
+                        <field name="nhan_vien_id"/>
+                        <field name="phong_ban_cu_id"/>
+                        <field name="phong_ban_moi_id"/>
+                        <field name="chuc_vu_cu_id"/>
+                        <field name="chuc_vu_moi_id"/>
+                        <field name="module_dich"/>
+                        <field name="trang_thai"/>
+                    </group>
+                    <field name="mo_ta"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hrm_sync_log" model="ir.actions.act_window">
+        <field name="name">Nhật ký đồng bộ HRM</field>
+        <field name="res_model">hrm.sync.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- System Event Bus -->
+    <record id="view_system_event_tree" model="ir.ui.view">
+        <field name="name">system.event.tree</field>
+        <field name="model">system.event</field>
+        <field name="arch" type="xml">
+            <tree string="Sự kiện hệ thống" create="false">
+                <field name="create_date" string="Thời gian"/>
+                <field name="name"/>
+                <field name="event_type"/>
+                <field name="source_model"/>
+                <field name="source_id"/>
+                <field name="state"/>
+                <field name="handler_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_system_event_form" model="ir.ui.view">
+        <field name="name">system.event.form</field>
+        <field name="model">system.event</field>
+        <field name="arch" type="xml">
+            <form string="Sự kiện hệ thống" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="event_type"/>
+                        <field name="state"/>
+                        <field name="handler_count"/>
+                        <field name="source_model"/>
+                        <field name="source_id"/>
+                    </group>
+                    <group string="Payload">
+                        <field name="payload" nolabel="1"/>
+                    </group>
+                    <group string="Kết quả">
+                        <field name="result_message" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_system_event" model="ir.actions.act_window">
+        <field name="name">Sự kiện hệ thống (Event Bus)</field>
+        <field name="res_model">system.event</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_tich_hop_he_thong"
+              name="Tích hợp hệ thống"
+              parent="menu_root"
+              sequence="90"/>
+
+    <menuitem id="menu_hrm_sync_log"
+              name="Nhật ký đồng bộ HRM"
+              parent="menu_tich_hop_he_thong"
+              action="action_hrm_sync_log"
+              sequence="1"/>
+
+    <menuitem id="menu_system_event"
+              name="Event Bus (Mức 2)"
+              parent="menu_tich_hop_he_thong"
+              action="action_system_event"
+              sequence="2"/>
+</odoo>

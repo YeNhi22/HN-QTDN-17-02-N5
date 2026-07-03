@@ -1,0 +1,5 @@
+id,nhan_vien_id/id,phong_ban_id/id,chuc_vu_id/id,time_start,time_end
+lsct001,nv001,pb_it,cv_tp,2023-01-01,2026-12-31
+lsct002,nv002,pb_it,cv_nv,2023-03-01,2026-12-31
+lsct003,nv003,pb_kt,cv_ktv,2023-01-01,2026-12-31
+lsct004,nv004,pb_kd,cv_tp,2023-06-01,2026-12-31

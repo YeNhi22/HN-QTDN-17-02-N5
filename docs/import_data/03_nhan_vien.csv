@@ -1,0 +1,5 @@
+id,ma_dinh_danh,ho_ten,ngay_sinh,que_quan,email,so_dien_thoai
+nv001,NV001,Nguyễn Văn An,1990-03-15,Hà Nội,an.nguyen@company.com,0912345678
+nv002,NV002,Trần Thị Bình,1995-07-22,Hà Nội,binh.tran@company.com,0987654321
+nv003,NV003,Lê Minh Cường,1992-11-08,Đà Nẵng,cuong.le@company.com,0901234567
+nv004,NV004,Phạm Thu Dung,1993-05-20,Hải Phòng,dung.pham@company.com,0909876543

@@ -1,0 +1,6 @@
+id,ma_tai_san,ten_tai_san,ngay_mua_ts,don_vi_tien_te,gia_tri_ban_dau,gia_tri_hien_tai,danh_muc_ts_id/id,pp_khau_hao,thoi_gian_su_dung,thoi_gian_toi_da,ty_le_khau_hao,don_vi_tinh,ghi_chu
+ts001,TS001,Laptop Dell Latitude 5520,2024-01-01,vnd,25000000,25000000,dm_pc,straight-line,0,5,20,Chiếc,Laptop phòng IT
+ts002,TS002,Laptop HP ProBook 450,2024-03-01,vnd,20000000,20000000,dm_pc,straight-line,0,5,20,Chiếc,Laptop nhân viên IT
+ts003,TS003,Máy in Canon LBP2900,2024-02-15,vnd,5500000,5500000,dm_office,straight-line,0,7,14.29,Chiếc,Máy in phòng KT
+ts004,TS004,Router WiFi TP-Link Archer,2024-01-01,vnd,3200000,3200000,dm_network,straight-line,0,7,14.29,Chiếc,Router văn phòng
+ts005,TS005,iPhone 14 Pro,2024-06-01,vnd,28000000,28000000,dm_phone,straight-line,0,3,33.33,Chiếc,Điện thoại KD

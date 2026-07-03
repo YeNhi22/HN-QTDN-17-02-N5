@@ -1,0 +1,156 @@
+/* Asset Modern UI - VIP + GPU Optimized (Pink/Red theme) */
+
+.o_list_view .o_list_table {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
+    animation: assetIn 0.4s ease;
+}
+
+@keyframes assetIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.o_list_view .o_list_table thead {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+}
+
+.o_list_view .o_list_table thead th {
+    color: #fff !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    padding: 15px 13px !important;
+    border: none !important;
+    font-size: 0.8rem !important;
+}
+
+.o_list_view .o_list_table thead th:hover,
+.o_list_view .o_list_table thead th:hover *,
+.o_list_view .o_list_table thead th a,
+.o_list_view .o_list_table thead th a:hover {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.o_list_view .o_list_table thead th.o_column_sortable:hover {
+    background: rgba(255,255,255,0.12) !important;
+}
+
+.o_list_view .o_list_table tbody tr {
+    transition: background 0.15s ease;
+}
+.o_list_view .o_list_table tbody tr:hover {
+    background: rgba(240,147,251,0.06) !important;
+}
+
+.o_list_view .o_list_table tbody td {
+    padding: 13px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.o_form_view .o_form_sheet {
+    background: #fff !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
+    padding: 28px !important;
+    animation: assetIn 0.4s ease;
+}
+
+.o_form_view .o_form_label {
+    font-weight: 700 !important;
+    color: #4a5568 !important;
+    font-size: 0.82rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.o_form_view .o_field_widget input,
+.o_form_view .o_field_widget select,
+.o_form_view .o_field_widget textarea {
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 9px 14px !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.o_form_view .o_field_widget input:focus,
+.o_form_view .o_field_widget select:focus,
+.o_form_view .o_field_widget textarea:focus {
+    border-color: #f5576c !important;
+    box-shadow: 0 0 0 4px rgba(245,87,108,0.12) !important;
+    outline: none !important;
+}
+
+.o_statusbar_status .o_arrow_button.btn-primary {
+    background: linear-gradient(135deg, #f093fb, #f5576c) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(245,87,108,0.35) !important;
+}
+
+.o_form_view .btn-primary,
+.o_form_view .o_form_button_save {
+    background: linear-gradient(135deg, #f093fb, #f5576c) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 14px rgba(245,87,108,0.35) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+.o_form_view .btn-primary:hover,
+.o_form_view .o_form_button_save:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 22px rgba(245,87,108,0.45) !important;
+}
+
+.o_notebook .nav-tabs .nav-link {
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: 700 !important;
+    color: #718096 !important;
+    border: 2px solid #e2e8f0 !important;
+    background: #f7f8fc !important;
+    padding: 10px 22px !important;
+    transition: background 0.2s ease, color 0.2s ease !important;
+}
+.o_notebook .nav-tabs .nav-link.active {
+    background: linear-gradient(135deg, #f093fb, #f5576c) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(245,87,108,0.35) !important;
+}
+
+.badge { border-radius: 20px !important; padding: 5px 13px !important; font-weight: 700 !important; font-size: 0.78rem !important; }
+.badge.badge-success { background: linear-gradient(135deg,#11998e,#38ef7d) !important; color:#fff !important; }
+.badge.badge-warning { background: linear-gradient(135deg,#f59e0b,#fbbf24) !important; color:#fff !important; }
+.badge.badge-danger  { background: linear-gradient(135deg,#ef4444,#f5576c) !important; color:#fff !important; }
+.badge.badge-info    { background: linear-gradient(135deg,#4facfe,#00f2fe) !important; color:#fff !important; }
+
+.o_kanban_record {
+    border-radius: 16px !important;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.08) !important;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease !important;
+    border-top: 3px solid #f5576c !important;
+}
+.o_kanban_record:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 12px 32px rgba(245,87,108,0.2) !important;
+}
+
+.o_form_view .oe_stat_button {
+    border-radius: 12px !important;
+    border: 2px solid #e2e8f0 !important;
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+.o_form_view .oe_stat_button:hover {
+    border-color: #f5576c !important;
+    transform: translateY(-3px) scale(1.03) !important;
+    box-shadow: 0 6px 20px rgba(245,87,108,0.2) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}

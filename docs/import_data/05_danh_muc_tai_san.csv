@@ -1,0 +1,5 @@
+id,ma_danh_muc_ts,ten_danh_muc_ts,mo_ta_danh_muc_ts
+dm_pc,PC,Máy tính & Laptop,PC Laptop máy tính bảng
+dm_office,OFFICE,Thiết bị văn phòng,Máy in máy photocopy
+dm_network,NETWORK,Thiết bị mạng,Router switch access point
+dm_phone,PHONE,Điện thoại & Tablet,Điện thoại di động tablet

@@ -1,0 +1,14 @@
+
+
+    Directory: E:\HN-QTDN-17-02-N5\addons\quan_ly_tai_san\wizard
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         6/27/2026   7:09 AM                __pycache__                                                          
+-a----         6/27/2026   4:27 AM           8961 muon_tra_wizard.py                                                   
+-a----         6/27/2026   7:07 AM           4847 muon_tra_wizard_views.xml                                            
+-a----         6/27/2026   7:07 AM             56 __init__.py                                                          
+
+
+MANIFEST OK

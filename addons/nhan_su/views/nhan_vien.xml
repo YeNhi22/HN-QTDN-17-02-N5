@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_nhan_vien_form" model="ir.ui.view">
+            <field name="name">nhan_vien</field>
+            <field name="model">nhan_vien</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Nhân viên</div>
+                        <group>
+                            <group string="Thông tin chung">
+                                <field name="ma_dinh_danh" />
+                                <field name="ho_ten" />
+                                <field name="ngay_sinh" />
+                                <field name="tuoi" readonly="1"/>
+                            </group>
+                            <group string="Liên hệ">
+                                <field name="que_quan" />
+                                <field name="email" />
+                                <field name="so_dien_thoai" />
+                            </group>
+                        </group>
+
+                        <!-- Cải tiến từ phiên bản cũ: Thêm nhóm hiển thị phòng ban & chức vụ
+                             hiện tại (compute từ lịch sử công tác) để các module Tài sản và
+                             Tài chính có thể hiển thị thông tin HRM ngay trên form nhân viên.
+                             Đây là điểm tích hợp HRM → Asset/Finance. -->
+                        <group string="Vị trí công tác hiện tại (Dữ liệu HRM gốc)">
+                            <group>
+                                <field name="phong_ban_hien_tai_id" readonly="1"
+                                       help="Tự động lấy từ lịch sử công tác gần nhất"/>
+                            </group>
+                            <group>
+                                <field name="chuc_vu_hien_tai_id" readonly="1"
+                                       help="Tự động lấy từ lịch sử công tác gần nhất"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Lịch sử công tác">
+                                <field name="lich_su_cong_tac_ids"/>
+                            </page>
+                            <page string="Tài khoản Web">
+                                <group>
+                                    <group string="Thông tin đăng nhập">
+                                        <field name="web_username" />
+                                        <field name="is_web_active" widget="boolean_toggle"/>
+                                        <field name="last_login" readonly="1"/>
+                                    </group>
+                                    <group string="Liên kết Odoo">
+                                        <field name="user_id" />
+                                    </group>
+                                </group>
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Lưu ý:</strong> Mật khẩu mặc định là <code>123456</code>. 
+                                    Nhân viên có thể đổi mật khẩu thông qua web app.
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_nhan_vien_tree" model="ir.ui.view">
+            <field name="name">nhan_vien</field>
+            <field name="model">nhan_vien</field>
+            <field name="arch" type="xml">
+                <!-- Cải tiến từ phiên bản cũ: Thêm cột phong_ban_hien_tai_id và
+                     chuc_vu_hien_tai_id vào danh sách để nhìn nhanh thông tin HRM -->
+                <tree>
+                    <field name="ma_dinh_danh" />
+                    <field name="ho_ten" />
+                    <field name="ngay_sinh" optional="hide"/>
+                    <field name="email" />
+                    <field name="so_dien_thoai" optional="hide"/>
+                    <field name="phong_ban_hien_tai_id" string="Phòng ban" optional="show"/>
+                    <field name="chuc_vu_hien_tai_id" string="Chức vụ" optional="show"/>
+                    <field name="tuoi" optional="hide"/>
+                    <field name="web_username" string="Tài khoản" optional="show"/>
+                    <field name="is_web_active" string="Web Active" widget="boolean_toggle"/>
+                    <field name="last_login" string="Đăng nhập lần cuối" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="nhan_vien_search">
+            <field name="model">nhan_vien</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="ma_dinh_danh" />
+                    <field name="ho_ten" />
+                    <field name="email" />
+                    <field name="web_username" />
+                    <!-- Cải tiến từ phiên bản cũ: Thêm filter theo phòng ban để
+                         có thể lọc nhân viên theo phòng ban từ màn hình quản lý tài sản -->
+                    <field name="phong_ban_hien_tai_id" string="Phòng ban"/>
+                    <field name="chuc_vu_hien_tai_id" string="Chức vụ"/>
+                    <filter string="Có tài khoản web" name="has_web_account" domain="[('web_username', '!=', False)]"/>
+                    <filter string="Tài khoản kích hoạt" name="web_active" domain="[('is_web_active', '=', True)]"/>
+                    <group expand="0" string="Nhóm theo">
+                        <filter string="Phòng ban" name="group_phong_ban" context="{'group_by': 'phong_ban_hien_tai_id'}"/>
+                        <filter string="Chức vụ" name="group_chuc_vu" context="{'group_by': 'chuc_vu_hien_tai_id'}"/>
+                        <filter string="Trạng thái web" name="group_web_status" context="{'group_by': 'is_web_active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_nhan_vien" model="ir.actions.act_window">
+            <field name="name">Nhân viên</field>
+            <field name="res_model">nhan_vien</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="nhan_vien_search" />
+        </record>
+    </data>
+</odoo>

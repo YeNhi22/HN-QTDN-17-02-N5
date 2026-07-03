@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_bao_cao_tai_chinh_tree" model="ir.ui.view">
+            <field name="name">bao_cao_tai_chinh.tree</field>
+            <field name="model">bao_cao_tai_chinh</field>
+            <field name="arch" type="xml">
+                <tree string="Báo cáo tài chính">
+                    <field name="name"/>
+                    <field name="thang"/>
+                    <field name="nam"/>
+                    <!-- Cải tiến từ phiên bản cũ: Thêm cột phong_ban_id để
+                         nhìn nhanh báo cáo của phòng ban nào (HRM gốc) -->
+                    <field name="phong_ban_id" string="Phòng ban" optional="show"/>
+                    <field name="doanh_thu"/>
+                    <field name="tong_chi_phi"/>
+                    <field name="loi_nhuan"/>
+                    <field name="trang_thai" widget="badge"/>
+                    <field name="ngay_tao" widget="date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_bao_cao_tai_chinh_search" model="ir.ui.view">
+            <field name="name">bao_cao_tai_chinh.search</field>
+            <field name="model">bao_cao_tai_chinh</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="thang"/>
+                    <field name="nam"/>
+                    <field name="trang_thai"/>
+                    <!-- Cải tiến từ phiên bản cũ: Thêm filter theo phòng ban HRM -->
+                    <field name="phong_ban_id" string="Phòng ban"/>
+                    <filter name="loi_nhuan_duong" string="Có lãi" domain="[('loi_nhuan', '&gt;', 0)]"/>
+                    <filter name="loi_nhuan_am" string="Lỗ" domain="[('loi_nhuan', '&lt;', 0)]"/>
+                    <separator/>
+                    <filter name="trang_thai_nhap" string="Nháp" domain="[('trang_thai', '=', 'draft')]"/>
+                    <filter name="trang_thai_dang_xu_ly" string="Đang xử lý" domain="[('trang_thai', '=', 'in_progress')]"/>
+                    <filter name="trang_thai_hoan_thanh" string="Hoàn thành" domain="[('trang_thai', '=', 'completed')]"/>
+                    <group expand="0" string="Nhóm theo">
+                        <filter string="Phòng ban" name="group_phong_ban" context="{'group_by': 'phong_ban_id'}"/>
+                        <filter string="Năm" name="group_nam" context="{'group_by': 'nam'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_bao_cao_tai_chinh_form" model="ir.ui.view">
+            <field name="name">bao_cao_tai_chinh.form</field>
+            <field name="model">bao_cao_tai_chinh</field>
+            <field name="arch" type="xml">
+                <form string="Báo cáo tài chính">
+                    <header>
+                        <!-- Cải tiến từ phiên bản cũ: Đổi tên nút từ "Tính toán" thành
+                             "Tính toán & Đồng bộ Khấu hao" để rõ ràng hơn về chức năng
+                             tự động lấy chi phí khấu hao từ module tài sản. -->
+                        <button name="action_tinh_toan" type="object"
+                                string="⚡ Tính toán &amp; Đồng bộ Khấu hao"
+                                class="btn-primary"
+                                attrs="{'invisible': [('trang_thai', 'not in', ['draft', 'in_progress'])]}"/>
+                        <button name="action_hoan_thanh" type="object" string="Hoàn thành"
+                                attrs="{'invisible': [('trang_thai', '!=', 'in_progress')]}"/>
+                        <button name="action_quay_lai_nhap" type="object" string="Về nháp"
+                                attrs="{'invisible': [('trang_thai', 'not in', ['in_progress', 'completed'])]}"/>
+                        <button name="action_huy" type="object" string="Hủy"
+                                attrs="{'invisible': [('trang_thai', 'in', ['completed', 'cancelled'])]}"/>
+                        <field name="trang_thai" widget="statusbar"
+                               statusbar_visible="draft,in_progress,completed,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Thông tin báo cáo">
+                                <field name="name"/>
+                                <field name="thang"/>
+                                <field name="nam"/>
+                                <!-- Cải tiến từ phiên bản cũ: Thêm phong_ban_id liên kết HRM.
+                                     Khi chọn phòng ban, chi phí khấu hao tự động đề xuất
+                                     dựa trên tài sản của phòng ban đó. -->
+                                <field name="phong_ban_id"
+                                       string="Phòng ban (lọc chi phí)"
+                                       options="{'no_create': True}"
+                                       help="Chọn phòng ban để lọc và tự động tính chi phí khấu hao từ HRM"/>
+                                <field name="ngay_tao" readonly="1"/>
+                                <field name="nguoi_tao_id" readonly="1"/>
+                            </group>
+                            <group string="Kết quả">
+                                <field name="tong_chi_phi" readonly="1"/>
+                                <field name="loi_nhuan" readonly="1"/>
+                                <field name="ty_le_loi_nhuan" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- Cải tiến từ phiên bản cũ: Thêm banner hướng dẫn tích hợp -->
+                        <div class="alert alert-info" role="alert"
+                             attrs="{'invisible': [('trang_thai', '!=', 'draft')]}">
+                            <strong><i class="fa fa-info-circle"/> Hướng dẫn tích hợp HRM:</strong>
+                            Chọn <strong>Phòng ban</strong> và nhấn <strong>"Tính toán &amp; Đồng bộ Khấu hao"</strong>
+                            để hệ thống tự động lấy chi phí khấu hao từ tài sản của phòng ban đó.
+                        </div>
+
+                        <notebook>
+                            <page string="Doanh thu &amp; Chi phí">
+                                <group>
+                                    <field name="doanh_thu"/>
+                                    <field name="tong_chi_phi" readonly="1"/>
+                                    <field name="loi_nhuan" readonly="1"/>
+                                    <field name="ty_le_loi_nhuan" readonly="1"/>
+                                </group>
+                            </page>
+
+                            <page string="Chi tiết chi phí">
+                                <group>
+                                    <!-- Cải tiến từ phiên bản cũ: chi_phi_khau_hao hiển thị
+                                         với help text giải thích nguồn dữ liệu từ HRM/Asset -->
+                                    <field name="chi_phi_khau_hao"
+                                           help="Tự động lấy từ module Quản lý Tài sản khi nhấn 'Tính toán &amp; Đồng bộ Khấu hao'"/>
+                                    <field name="chi_phi_luong"/>
+                                    <field name="chi_phi_van_phong"/>
+                                    <field name="chi_phi_marketing"/>
+                                    <field name="chi_phi_dien_nuoc"/>
+                                    <field name="chi_phi_khac"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_bao_cao_tai_chinh" model="ir.actions.act_window">
+            <field name="name">Báo cáo tài chính</field>
+            <field name="res_model">bao_cao_tai_chinh</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_bao_cao_tai_chinh_search"/>
+        </record>
+    </data>
+</odoo>

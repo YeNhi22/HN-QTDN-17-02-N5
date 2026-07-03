@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem
+            id="menu_root"
+            name="🏠 Trang chủ"
+            web_icon="q_trang_chu,static/description/icon.png"
+            sequence="0"/>
+        
+        <!-- Dashboard Menu -->
+        <menuitem 
+            id="menu_dashboard" 
+            name="📊 Dashboard" 
+            parent="menu_root" 
+            action="action_dashboard_main"
+            sequence="1"/>
+
+        <!-- AI Chatbot - Opens Chat Interface -->
+        <menuitem 
+            id="menu_chatbot_main" 
+            name="🤖 AI Chatbot" 
+            parent="menu_root"
+            action="action_chatbot_page"
+            sequence="5"/>
+
+        <!-- Scan hóa đơn - Hiển thị ngay trên top bar -->
+        <menuitem
+            id="menu_invoice_ocr_scan"
+            name="📷 Scan hóa đơn"
+            parent="menu_root"
+            action="action_invoice_ocr_wizard"
+            sequence="10"/>
+
+        <!-- Menu cha Công cụ AI (chứa lịch sử) -->
+        <menuitem
+            id="menu_ai_tools"
+            name="🧠 Công cụ AI"
+            parent="menu_root"
+            sequence="15"/>
+
+        <menuitem
+            id="menu_invoice_ocr"
+            name="📄 OCR Hóa đơn"
+            parent="menu_ai_tools"
+            action="action_invoice_ocr_wizard"
+            sequence="1"/>
+
+        <menuitem
+            id="menu_invoice_ocr_history"
+            name="📋 Lịch sử OCR"
+            parent="menu_ai_tools"
+            action="action_invoice_ocr_result"
+            sequence="2"/>
+
+        <!-- Chatbot Management Submenu -->
+        <menuitem 
+            id="menu_chatbot_manage" 
+            name="⚙️ Quản lý Chatbot" 
+            parent="menu_root"
+            sequence="20"/>
+
+        <menuitem 
+            id="menu_chatbot_knowledge" 
+            name="📚 Cơ sở tri thức" 
+            parent="menu_chatbot_manage"
+            action="action_chatbot_knowledge"
+            sequence="1"/>
+
+        <menuitem 
+            id="menu_chatbot_faq" 
+            name="❓ FAQ" 
+            parent="menu_chatbot_manage"
+            action="action_chatbot_faq"
+            sequence="2"/>
+
+        <menuitem 
+            id="menu_chatbot_policy" 
+            name="📋 Quy chế, quy định" 
+            parent="menu_chatbot_manage"
+            action="action_chatbot_policy"
+            sequence="3"/>
+
+        <menuitem 
+            id="menu_chatbot_history" 
+            name="💬 Lịch sử hội thoại" 
+            parent="menu_chatbot_manage"
+            action="action_chatbot_conversation"
+            sequence="10"/>
+
+        <!-- Mức 3: AI OCR -->
+        <menuitem
+            id="menu_ai_tools"
+            name="🧠 Công cụ AI"
+            parent="menu_root"
+            sequence="15"/>
+
+        <menuitem
+            id="menu_invoice_ocr"
+            name="📄 OCR Hóa đơn"
+            parent="menu_ai_tools"
+            action="action_invoice_ocr_wizard"
+            sequence="1"/>
+
+        <menuitem
+            id="menu_invoice_ocr_history"
+            name="📋 Lịch sử OCR"
+            parent="menu_ai_tools"
+            action="action_invoice_ocr_result"
+            sequence="2"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+id,tai_san_id/id,phong_ban_id/id,nhan_vien_su_dung_id/id,ngay_phat,trang_thai,tinh_trang,ghi_chu
+pb001,ts001,pb_it,nv001,2024-01-05,in-use,binh_thuong,Cấp Trưởng phòng IT
+pb002,ts002,pb_it,nv002,2024-03-10,in-use,binh_thuong,Cấp nhân viên IT
+pb003,ts003,pb_kt,nv003,2024-02-20,in-use,binh_thuong,Máy in phòng Kế toán
+pb004,ts004,pb_it,nv001,2024-01-10,in-use,binh_thuong,Router phòng IT
+pb005,ts005,pb_kd,nv004,2024-06-05,in-use,binh_thuong,Điện thoại Trưởng KD

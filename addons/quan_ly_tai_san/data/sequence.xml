@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Sequence for Tài sản -->
+        <record id="seq_tai_san" model="ir.sequence">
+            <field name="name">Tài sản</field>
+            <field name="code">tai_san.sequence</field>
+            <field name="prefix">TS</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequence for Đề xuất mua tài sản -->
+        <record id="seq_de_xuat_mua_tai_san" model="ir.sequence">
+            <field name="name">Đề xuất mua tài sản</field>
+            <field name="code">de_xuat_mua_tai_san</field>
+            <field name="prefix">DXTS</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequence for Đơn mượn tài sản -->
+        <record id="seq_don_muon_tai_san" model="ir.sequence">
+            <field name="name">Đơn mượn tài sản</field>
+            <field name="code">don_muon_tai_san</field>
+            <field name="prefix">DMT</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequence for Phiếu mượn trả tài sản -->
+        <record id="seq_muon_tra_tai_san" model="ir.sequence">
+            <field name="name">Phiếu mượn trả tài sản</field>
+            <field name="code">muon_tra_tai_san</field>
+            <field name="prefix">MTTS</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequence for Kiểm kê tài sản -->
+        <record id="seq_kiem_ke_tai_san" model="ir.sequence">
+            <field name="name">Kiểm kê tài sản</field>
+            <field name="code">kiem_ke_tai_san</field>
+            <field name="prefix">KKTS</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequence for Luân chuyển tài sản -->
+        <record id="seq_luan_chuyen_tai_san" model="ir.sequence">
+            <field name="name">Luân chuyển tài sản</field>
+            <field name="code">luan_chuyen_tai_san</field>
+            <field name="prefix">LCTS</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

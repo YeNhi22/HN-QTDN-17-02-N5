@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tài khoản + sổ nhật ký tối thiểu cho Phê duyệt mua tài sản -->
+    <data noupdate="1">
+        <record id="account_setup_211" model="account.account">
+            <field name="code">211</field>
+            <field name="name">TSCĐ hữu hình</field>
+            <field name="user_type_id" ref="account.data_account_type_fixed_assets"/>
+            <field name="reconcile" eval="False"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="account_setup_112" model="account.account">
+            <field name="code">112</field>
+            <field name="name">Tiền gửi ngân hàng</field>
+            <field name="user_type_id" ref="account.data_account_type_liquidity"/>
+            <field name="reconcile" eval="False"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="journal_setup_misc" model="account.journal">
+            <field name="name">Nhật ký chung</field>
+            <field name="code">MISC</field>
+            <field name="type">general</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

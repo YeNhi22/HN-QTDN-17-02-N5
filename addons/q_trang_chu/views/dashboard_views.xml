@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard Form View - QWeb based (PHẢI ĐỊNH NGHĨA TRƯỚC) -->
+        <record id="view_dashboard_main_form" model="ir.ui.view">
+            <field name="name">dashboard.main.form</field>
+            <field name="model">dashboard.main</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard Tổng quan" create="false" edit="false" delete="false" class="o_form_readonly o_form_norecord o_dashboard_action">
+                    <sheet>
+                        <div class="o_dashboard_main">
+                            <!-- 🎨 Header với Glassmorphism -->
+                            <div class="o_dashboard_header">
+                                <h1 class="o_dashboard_title">
+                                    <i class="fa fa-dashboard"/> Dashboard Tổng quan
+                                </h1>
+                                <p class="o_dashboard_subtitle">
+                                    <i class="fa fa-cube"/> Quản lý Tài sản &amp; Tài chính • Cập nhật Real-time
+                                </p>
+                            </div>
+
+                            <!-- 📊 Stats Cards với Animation -->
+                            <div class="o_dashboard_stats">
+                                <div class="o_stat_card primary">
+                                    <div class="o_stat_icon primary">
+                                        <i class="fa fa-cube"/>
+                                    </div>
+                                    <div class="o_stat_value">
+                                        <field name="total_tai_san" readonly="1"/>
+                                    </div>
+                                    <div class="o_stat_label">
+                                        <i class="fa fa-database"/> TỔNG TÀI SẢN
+                                    </div>
+                                </div>
+                                
+                                <div class="o_stat_card warning">
+                                    <div class="o_stat_icon warning">
+                                        <i class="fa fa-clock-o"/>
+                                    </div>
+                                    <div class="o_stat_value">
+                                        <field name="don_cho_duyet" readonly="1"/>
+                                    </div>
+                                    <div class="o_stat_label">
+                                        <i class="fa fa-hourglass-half"/> ĐƠN CHỜ DUYỆT
+                                    </div>
+                                </div>
+                                
+                                <div class="o_stat_card info">
+                                    <div class="o_stat_icon info">
+                                        <i class="fa fa-exchange"/>
+                                    </div>
+                                    <div class="o_stat_value">
+                                        <field name="dang_muon" readonly="1"/>
+                                    </div>
+                                    <div class="o_stat_label">
+                                        <i class="fa fa-users"/> ĐANG CHO MƯỢN
+                                    </div>
+                                </div>
+                                
+                                <div class="o_stat_card success">
+                                    <div class="o_stat_icon success">
+                                        <i class="fa fa-money"/>
+                                    </div>
+                                    <div class="o_stat_value" style="font-size: 1.8rem;">
+                                        <field name="total_value" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div class="o_stat_label">
+                                        <i class="fa fa-line-chart"/> TỔNG GIÁ TRỊ
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ⚡ Quick Actions với Premium Buttons -->
+                            <div class="o_quick_actions">
+                                <h5>
+                                    <i class="fa fa-bolt text-warning"/> Thao tác nhanh
+                                </h5>
+                                <div class="o_quick_action_btns">
+                                    <button name="action_open_don_muon" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-plus-circle"/>
+                                        <span>Tạo đơn mượn</span>
+                                    </button>
+                                    <button name="action_open_muon_tra" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-check-square-o"/>
+                                        <span>Duyệt đơn</span>
+                                    </button>
+                                    <button name="action_open_tai_san" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-cubes"/>
+                                        <span>Tài sản</span>
+                                    </button>
+                                    <button name="action_open_kiem_ke" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-clipboard"/>
+                                        <span>Kiểm kê</span>
+                                    </button>
+                                    <button name="action_open_phe_duyet" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-file-text"/>
+                                        <span>Phê duyệt mua</span>
+                                    </button>
+                                    <button name="action_open_ocr" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-camera"/>
+                                        <span>Scan hóa đơn</span>
+                                    </button>
+                                    <button name="action_refresh_data" type="object" class="o_quick_action_btn">
+                                        <i class="fa fa-refresh"/>
+                                        <span>Làm mới</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 📋 Notifications and Activities Grid -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="o_dashboard_notifications">
+                                        <h5 style="font-size: 1.3rem; font-weight: 700; color: #2c3e50; margin-bottom: 24px;">
+                                            <i class="fa fa-bell text-danger"/> Thông báo quan trọng
+                                        </h5>
+                                        <field name="thong_bao_html" readonly="1" nolabel="1"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="o_activity_timeline">
+                                        <h5 style="font-size: 1.3rem; font-weight: 700; color: #2c3e50; margin-bottom: 24px;">
+                                            <i class="fa fa-history text-info"/> Hoạt động gần đây
+                                        </h5>
+                                        <field name="hoat_dong_html" readonly="1" nolabel="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Dashboard Server Action - tự động tạo record và mở form -->
+        <record id="action_dashboard_main_server" model="ir.actions.server">
+            <field name="name">Dashboard</field>
+            <field name="model_id" ref="model_dashboard_main"/>
+            <field name="state">code</field>
+            <field name="code">
+# Tạo một record dashboard mới (TransientModel)
+dashboard = env['dashboard.main'].create({'name': 'Dashboard'})
+# Trả về action mở form view với record đó
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Dashboard Tổng quan',
+    'res_model': 'dashboard.main',
+    'view_mode': 'form',
+    'res_id': dashboard.id,
+    'view_id': env.ref('q_trang_chu.view_dashboard_main_form').id,
+    'target': 'current',
+}
+            </field>
+        </record>
+        
+        <!-- Dashboard Action Window (backup) -->
+        <record id="action_dashboard_main" model="ir.actions.act_window">
+            <field name="name">Dashboard</field>
+            <field name="res_model">dashboard.main</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_dashboard_main_form"/>
+            <field name="target">current</field>
+        </record>
+
+    </data>
+</odoo>
