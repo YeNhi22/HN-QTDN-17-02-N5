@@ -59,33 +59,60 @@
         <field name="arch" type="xml">
             <form string="Kết quả OCR hóa đơn">
                 <header>
-                    <button name="action_create_de_xuat" string="Tạo đề xuất mua" type="object"
-                            class="oe_highlight" states="done"
+                    <button name="action_create_de_xuat"
+                            string="🛒 Tạo đề xuất mua"
+                            type="object"
+                            class="oe_highlight"
+                            states="done"
                             attrs="{'invisible': [('de_xuat_id', '!=', False)]}"/>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,done,error"/>
                 </header>
                 <sheet>
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-file-text-o"
+                                type="object" name="action_create_de_xuat"
+                                attrs="{'invisible': ['|', ('state','!=','done'), ('de_xuat_id','!=',False)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Tạo đề xuất</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-check-circle"
+                                type="object" name="action_create_de_xuat"
+                                attrs="{'invisible': [('de_xuat_id','=',False)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Đã tạo đề xuất</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Thông tin hóa đơn -->
                     <group>
-                        <group string="Thông tin hóa đơn">
-                            <field name="name"/>
-                            <field name="nha_cung_cap"/>
-                            <field name="so_hoa_don"/>
-                            <field name="ngay_hoa_don"/>
+                        <group string="📋 Thông tin hóa đơn">
+                            <field name="name" string="Tên file"/>
+                            <field name="nha_cung_cap" string="Nhà cung cấp"/>
+                            <field name="so_hoa_don" string="Số hóa đơn"/>
+                            <field name="ngay_hoa_don" string="Ngày hóa đơn"/>
                         </group>
-                        <group string="Tài chính">
-                            <field name="tong_tien"/>
-                            <field name="thue_vat"/>
-                            <field name="de_xuat_id"/>
+                        <group string="💰 Tài chính">
+                            <field name="tong_tien" string="Tổng tiền"/>
+                            <field name="thue_vat" string="Thuế VAT"/>
+                            <field name="de_xuat_id" string="Đề xuất đã tạo"
+                                   attrs="{'invisible': [('de_xuat_id','=',False)]}"/>
                         </group>
                     </group>
-                    <notebook>
-                        <page string="Chi tiết hàng hóa">
-                            <field name="chi_tiet" nolabel="1"/>
-                        </page>
-                        <page string="JSON thô">
-                            <field name="raw_json" nolabel="1"/>
-                        </page>
-                    </notebook>
+
+                    <!-- Bảng chi tiết hàng hóa trực quan -->
+                    <separator string="🛍️ Chi tiết hàng hóa"/>
+                    <field name="chi_tiet_html" widget="html" nolabel="1" readonly="1"/>
+
+                    <!-- Thông báo lỗi nếu có -->
+                    <div class="alert alert-danger" role="alert"
+                         attrs="{'invisible': [('state','!=','error')]}">
+                        <strong>❌ Lỗi OCR:</strong>
+                        <field name="error_message" nolabel="1" readonly="1"/>
+                    </div>
                 </sheet>
             </form>
         </field>
@@ -123,9 +150,13 @@
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <label for="gemini_api_key" string="API Key (Groq/AI)"/>
-                                <div class="text-muted">API key cho Chatbot AI và OCR hóa đơn</div>
-                                <field name="gemini_api_key" password="True"/>
+                                <label for="groq_api_key" string="Groq API Key"/>
+                                <div class="text-muted">
+                                    API Key của Groq – dùng cho AI Chatbot và OCR hóa đơn.
+                                    Lấy tại: <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>
+                                </div>
+                                <field name="groq_api_key" password="True"
+                                       placeholder="gsk_..."/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">

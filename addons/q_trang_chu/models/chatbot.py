@@ -10,13 +10,14 @@ from datetime import datetime, timedelta
 
 _logger = logging.getLogger(__name__)
 
-# Gemini API Configuration - Lấy từ biến môi trường để bảo mật
-# Đặt biến môi trường: export GEMINI_API_KEY="your-api-key-here"
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6JeG5no-xKgmVJw1CR0wi8hYByQ6xjvVxyMgNe1ae7FjQ")
+# Gemini API Configuration
+# Key lấy từ biến môi trường hoặc Odoo Settings
+# KHÔNG hardcode key vào đây – đặt trong .env hoặc qua giao diện Thiết lập
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
-# Groq API Configuration
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
+# Groq API Configuration (tùy chọn – fallback cho chatbot)
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
@@ -128,7 +129,11 @@ QUY TẮC:
 
         # === THỬ GROQ TRƯỚC ===
         try:
-            groq_key = GROQ_API_KEY
+            # Lấy Groq key từ Odoo Settings (ưu tiên) hoặc env
+            icp = self.env['ir.config_parameter'].sudo()
+            groq_key = (icp.get_param('q_trang_chu.gemini_api_key') or '').strip()
+            if not groq_key:
+                groq_key = os.environ.get('GROQ_API_KEY', '').strip()
             if groq_key:
                 messages = [
                     {"role": "system", "content": system_prompt + f"\n\nThông tin hệ thống:\n{context}"},
@@ -284,14 +289,12 @@ Hãy trả lời câu hỏi trên một cách hữu ích và thân thiện."""
                 'use_gemini': True,
             })
 
-        # Đọc API key trực tiếp từ module constant — đảm bảo luôn có key
-        api_key = GEMINI_API_KEY
-        # Nếu có trong System Parameters thì ưu tiên hơn
-        param_key = self.env['ir.config_parameter'].sudo().get_param(
-            'mail_bot_gemini.api_key', default=''
-        )
-        if param_key:
-            api_key = param_key
+        # Lấy Groq API key từ Odoo Settings (Thiết lập → Tích hợp AI)
+        icp = self.env['ir.config_parameter'].sudo()
+        api_key = (icp.get_param('q_trang_chu.gemini_api_key') or '').strip()
+        if not api_key:
+            # Fallback về biến môi trường
+            api_key = os.environ.get('GROQ_API_KEY', '').strip()
 
         use_gemini = bool(api_key)
 

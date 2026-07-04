@@ -11,7 +11,8 @@ from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
-GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
+# Key lấy từ biến môi trường hoặc Odoo Settings – KHÔNG hardcode
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '')
 GROQ_VISION_URL = 'https://api.groq.com/openai/v1/chat/completions'
 GROQ_VISION_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct'
 
@@ -50,6 +51,82 @@ class InvoiceOcrResult(models.Model):
     ], default='draft', required=True)
     error_message = fields.Text(string='Lỗi')
     de_xuat_id = fields.Many2one('de_xuat_mua_tai_san', string='Đề xuất đã tạo', readonly=True)
+
+    # Field HTML trực quan cho chi tiết hàng hóa
+    chi_tiet_html = fields.Html(
+        string='Chi tiết hàng hóa',
+        compute='_compute_chi_tiet_html',
+        sanitize=False,
+    )
+
+    @api.depends('chi_tiet', 'tong_tien', 'thue_vat')
+    def _compute_chi_tiet_html(self):
+        """Render chi tiết hàng hóa dạng bảng HTML đẹp."""
+        for rec in self:
+            try:
+                items = json.loads(rec.chi_tiet or '[]')
+            except Exception:
+                rec.chi_tiet_html = '<p class="text-muted">Không có dữ liệu chi tiết.</p>'
+                continue
+
+            if not items:
+                rec.chi_tiet_html = '<p class="text-muted">Không có hàng hóa nào.</p>'
+                continue
+
+            rows = ''
+            for i, item in enumerate(items, 1):
+                ten = item.get('ten', '')
+                sl = item.get('so_luong', 1)
+                don_gia = item.get('don_gia', 0)
+                thanh_tien = item.get('thanh_tien', 0)
+                rows += f'''
+                <tr style="border-bottom:1px solid #e5e7eb;">
+                    <td style="padding:10px 8px;text-align:center;color:#6b7280;">{i}</td>
+                    <td style="padding:10px 8px;font-weight:500;">{ten}</td>
+                    <td style="padding:10px 8px;text-align:center;">{sl}</td>
+                    <td style="padding:10px 8px;text-align:right;color:#374151;">{don_gia:,.0f}</td>
+                    <td style="padding:10px 8px;text-align:right;font-weight:600;color:#1d4ed8;">{thanh_tien:,.0f}</td>
+                </tr>'''
+
+            tong = rec.tong_tien or sum(i.get('thanh_tien', 0) for i in items)
+            vat = rec.thue_vat or 0
+            tong_cong = tong + vat
+
+            html = f'''
+<div style="font-family:'Segoe UI',sans-serif;border-radius:10px;overflow:hidden;
+            border:1px solid #e5e7eb;margin-top:4px;">
+  <table style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr style="background:linear-gradient(90deg,#1e3a5f,#2d6a9f);color:white;">
+        <th style="padding:12px 8px;text-align:center;width:40px;">#</th>
+        <th style="padding:12px 8px;text-align:left;">Tên hàng hóa</th>
+        <th style="padding:12px 8px;text-align:center;width:70px;">SL</th>
+        <th style="padding:12px 8px;text-align:right;width:130px;">Đơn giá (VNĐ)</th>
+        <th style="padding:12px 8px;text-align:right;width:140px;">Thành tiền (VNĐ)</th>
+      </tr>
+    </thead>
+    <tbody style="background:#fff;">
+      {rows}
+    </tbody>
+    <tfoot>
+      <tr style="background:#f8fafc;">
+        <td colspan="4" style="padding:10px 8px;text-align:right;font-weight:600;color:#374151;">
+          Thuế VAT:
+        </td>
+        <td style="padding:10px 8px;text-align:right;color:#dc2626;">{vat:,.0f}</td>
+      </tr>
+      <tr style="background:#eff6ff;">
+        <td colspan="4" style="padding:12px 8px;text-align:right;font-weight:700;
+                                color:#1e40af;font-size:14px;">
+          TỔNG CỘNG:
+        </td>
+        <td style="padding:12px 8px;text-align:right;font-weight:800;
+                   color:#1e40af;font-size:15px;">{tong_cong:,.0f}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>'''
+            rec.chi_tiet_html = html
 
     def action_create_de_xuat(self):
         self.ensure_one()
@@ -102,8 +179,13 @@ class InvoiceOcrService(models.AbstractModel):
 
     @api.model
     def _get_api_key(self):
+        """Lấy Groq API key từ Odoo Settings (Thiết lập → Tích hợp AI)."""
         icp = self.env['ir.config_parameter'].sudo()
-        return icp.get_param('q_trang_chu.gemini_api_key') or GROQ_API_KEY
+        key = (icp.get_param('q_trang_chu.gemini_api_key') or '').strip()
+        if not key:
+            # Fallback về biến môi trường nếu chưa set trong Settings
+            key = os.environ.get('GROQ_API_KEY', '').strip()
+        return key
 
     @api.model
     def extract_from_attachment(self, attachment):

@@ -34,7 +34,7 @@ services:
       - odoo-web-data:/var/lib/odoo
       - ./odoo-docker.conf:/etc/odoo/odoo.conf:ro
     ports:
-      - "8071:8069"
+      - "8069:8069"
     restart: unless-stopped
 
 volumes:

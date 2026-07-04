@@ -17,9 +17,10 @@ class ResConfigSettings(models.TransientModel):
         string='Telegram Chat ID',
         config_parameter='q_trang_chu.telegram_chat_id',
     )
-    gemini_api_key = fields.Char(
-        string='API Key (Groq/AI)',
+    groq_api_key = fields.Char(
+        string='Groq API Key',
         config_parameter='q_trang_chu.gemini_api_key',
+        help='API Key của Groq (https://console.groq.com/keys). Dùng cho AI Chatbot và OCR hóa đơn.',
     )
     auto_post_depreciation = fields.Boolean(
         string='Tự động ghi sổ khấu hao (Cron)',
