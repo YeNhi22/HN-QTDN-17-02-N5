@@ -22,18 +22,16 @@ class TinhToanKhauHaoTuDong(models.Model):
     thang_nam = fields.Char(
         string='Tháng/Năm',
         required=True,
-        readonly=True,
         help='Tháng và năm tính khấu hao (MM/YYYY)'
     )
     
-    thang = fields.Integer(string='Tháng', required=True, readonly=True)
-    nam = fields.Integer(string='Năm', required=True, readonly=True)
+    thang = fields.Integer(string='Tháng', required=True)
+    nam = fields.Integer(string='Năm', required=True)
     
     ngay_tinh = fields.Date(
         string='Ngày tính',
         default=fields.Date.today,
         required=True,
-        readonly=True
     )
     
     # ========== TRẠNG THÁI ==========
@@ -101,6 +99,27 @@ class TinhToanKhauHaoTuDong(models.Model):
         if vals.get('thang') and vals.get('nam'):
             vals['thang_nam'] = f"{vals['thang']:02d}/{vals['nam']}"
         return super(TinhToanKhauHaoTuDong, self).create(vals)
+
+    @api.onchange('thang', 'nam')
+    def _onchange_thang_nam(self):
+        """Tự động cập nhật thang_nam khi thay đổi thang hoặc nam."""
+        if self.thang and self.nam:
+            self.thang_nam = f"{self.thang:02d}/{self.nam}"
+
+    @api.model
+    def default_get(self, fields_list):
+        """Thiết lập giá trị mặc định tháng/năm hiện tại."""
+        res = super().default_get(fields_list)
+        today = fields.Date.today()
+        if 'thang' in fields_list:
+            res['thang'] = today.month
+        if 'nam' in fields_list:
+            res['nam'] = today.year
+        if 'thang_nam' in fields_list:
+            res['thang_nam'] = f"{today.month:02d}/{today.year}"
+        if 'ngay_tinh' in fields_list:
+            res['ngay_tinh'] = today
+        return res
     
     # ========== ACTION METHODS ==========
     

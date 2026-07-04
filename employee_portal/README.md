@@ -43,7 +43,7 @@ Web app cho nhân viên tự xem tài sản, tạo đơn mượn – không cầ
 
 Nếu Odoo chạy ở port khác, sửa dòng đầu trong `index.html`:
 ```javascript
-const ODOO_URL = 'http://localhost:8071'; // ← đổi ở đây
+const ODOO_URL = 'http://localhost:8069'; // ← đổi ở đây
 ```
 
 ---

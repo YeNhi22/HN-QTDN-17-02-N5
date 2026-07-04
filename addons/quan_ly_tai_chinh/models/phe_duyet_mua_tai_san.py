@@ -631,20 +631,33 @@ class PheDuyetMuaTaiSan(models.Model):
         
         tai_san_obj = self.env['tai_san']
         created_assets = self.env['tai_san']
-        
+
+        # ── Tìm danh mục mặc định để dùng khi line không có danh mục ────
+        danh_muc_mac_dinh = self.env['danh_muc_tai_san'].search([], limit=1)
+
         # Tạo tài sản cho từng dòng chi tiết
         for line in self.line_ids:
-            # Validate dữ liệu
-            if not line.danh_muc_ts_id:
-                raise UserError(_('Dòng "%s" chưa có danh mục tài sản.\n\nVui lòng chọn danh mục tài sản cho tất cả các dòng.') % line.ten_thiet_bi)
+            # ── Xử lý danh mục rỗng: dùng danh mục mặc định thay vì crash ──
+            danh_muc = line.danh_muc_ts_id
+            if not danh_muc:
+                if not danh_muc_mac_dinh:
+                    raise UserError(_(
+                        'Dòng "%s" chưa có danh mục tài sản và hệ thống không tìm được danh mục nào.\n\n'
+                        'Vui lòng tạo ít nhất 1 danh mục tài sản tại: Quản lý tài sản → Danh mục tài sản.'
+                    ) % line.ten_thiet_bi)
+                danh_muc = danh_muc_mac_dinh
             
             if line.so_luong <= 0:
                 raise UserError(_('Dòng "%s" có số lượng không hợp lệ.\n\nSố lượng phải lớn hơn 0.') % line.ten_thiet_bi)
             
             # Tạo từng tài sản theo số lượng
             for i in range(int(line.so_luong)):
-                # Tạo mã tài sản duy nhất
-                asset_code = f"{self.ma_phe_duyet}-{line.sequence or line.id}-{i+1:03d}"
+                # Tạo mã tài sản unique – dùng sequence Odoo
+                seq = self.env['ir.sequence'].next_by_code('tai_san.sequence')
+                if not seq:
+                    import datetime
+                    seq = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')[:16]
+                asset_code = f"TS-{seq}"
                 
                 # Chuẩn bị dữ liệu tài sản
                 asset_vals = {
@@ -652,11 +665,11 @@ class PheDuyetMuaTaiSan(models.Model):
                     'ten_tai_san': line.ten_thiet_bi,
                     'ngay_mua_ts': self.ngay_phe_duyet or fields.Date.today(),
                     'don_vi_tien_te': self.don_vi_tien_te or 'vnd',
-                    'gia_tri_ban_dau': line.don_gia,
-                    'gia_tri_hien_tai': line.don_gia,
-                    'danh_muc_ts_id': line.danh_muc_ts_id.id,
+                    'gia_tri_ban_dau': line.don_gia or 1,
+                    'gia_tri_hien_tai': line.don_gia or 1,
+                    'danh_muc_ts_id': danh_muc.id,
                     'pp_khau_hao': line.pp_khau_hao or 'none',
-                    'thoi_gian_su_dung': 0,  # Mới mua nên = 0
+                    'thoi_gian_su_dung': 0,
                     'thoi_gian_toi_da': line.thoi_gian_su_dung or 5,
                     'ty_le_khau_hao': line.ty_le_khau_hao or 20.0,
                     'don_vi_tinh': line.don_vi_tinh or 'Chiếc',
@@ -665,7 +678,7 @@ class PheDuyetMuaTaiSan(models.Model):
                         f'📋 Đề xuất gốc: {self.ma_de_xuat or "N/A"}\n'
                         f'📅 Ngày phê duyệt: {self.ngay_phe_duyet}\n'
                         f'👤 Người phê duyệt: {self.nguoi_phe_duyet_id.name if self.nguoi_phe_duyet_id else "N/A"}\n'
-                        f'🏢 Phòng ban: {self.phong_ban_id.name if self.phong_ban_id else "N/A"}\n'
+                        f'🏢 Phòng ban: {self.phong_ban_id.ten_phong_ban if self.phong_ban_id else "N/A"}\n'
                         f'📝 Mô tả: {line.mo_ta or "Không có"}'
                     ),
                 }
@@ -688,15 +701,11 @@ class PheDuyetMuaTaiSan(models.Model):
                     # Nếu lỗi khi tạo tài sản, báo rõ dòng nào bị lỗi
                     raise UserError(_(
                         'Lỗi khi tạo tài sản "%s" (số %s/%s):\n%s\n\n'
-                        'Dữ liệu:\n'
-                        '- Mã: %s\n'
-                        '- Tên: %s\n'
-                        '- Danh mục: %s\n'
-                        '- Giá trị: %s %s'
+                        'Dữ liệu:\n- Mã: %s\n- Tên: %s\n- Danh mục: %s\n- Giá trị: %s %s'
                     ) % (
                         line.ten_thiet_bi, i+1, int(line.so_luong), str(e),
-                        asset_code, line.ten_thiet_bi, 
-                        line.danh_muc_ts_id.name if line.danh_muc_ts_id else 'N/A',
+                        asset_code, line.ten_thiet_bi,
+                        danh_muc.ten_danh_muc_ts if danh_muc else 'N/A',
                         line.don_gia, self.don_vi_tien_te or 'VND'
                     ))
         
@@ -847,6 +856,24 @@ class PheDuyetMuaTaiSan(models.Model):
             'tk_nguon_von_id': tk_nv.id,
             'journal_id': journal.id,
         })
+
+        # ── Tạo bút toán nội bộ (but_toan) để hiển thị trong menu Kế toán ──
+        try:
+            so_bt = self.env['ir.sequence'].next_by_code('but_toan.sequence') or f'BT-{self.ma_phe_duyet}'
+            self.env['but_toan'].create({
+                'so_but_toan': so_bt,
+                'ngay_but_toan': self.ngay_phe_duyet or fields.Date.today(),
+                'mo_ta': f'Mua tài sản – {self.ma_phe_duyet}: {self.ten_de_xuat or ""}',
+                'tai_khoan_no_id': tk_ts.id,
+                'tai_khoan_co_id': tk_nv.id,
+                'so_tien': self.tong_gia_tri or 0,
+                'trang_thai': 'posted',
+                'khau_hao_id': self.khau_hao_ids[:1].id if self.khau_hao_ids else False,
+            })
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(f'Không tạo được but_toan nội bộ: {e}')
+
         return move
     
     def _create_depreciation_schedule(self):
