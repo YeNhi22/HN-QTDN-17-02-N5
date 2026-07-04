@@ -14,7 +14,11 @@
                                 <field name="tai_san_id" string="Tài sản"
                                         domain="['|', ('trang_thai_thanh_ly', '=', 'chua_phan_bo'), ('trang_thai_thanh_ly', '=', 'chua_thanh_ly')]"/>
                                 <field name="ngay_phat" string="Ngày phân bổ"/>
-                                <field name="nhan_vien_su_dung_id" string="Nhân viên sử dụng"/>
+                                <!-- Lọc nhân viên theo phòng ban nếu đã chọn phòng ban -->
+                                <field name="nhan_vien_su_dung_id" string="Nhân viên sử dụng"
+                                       domain="[('phong_ban_hien_tai_id', '=', phong_ban_id)] if phong_ban_id else []"
+                                       context="{'default_phong_ban_hien_tai_id': phong_ban_id}"
+                                       help="Chọn nhân viên – phòng ban sẽ tự động điền từ HRM. Nếu đã chọn phòng ban, danh sách sẽ lọc theo phòng ban đó."/>
                             </group>
                             <group string="Trạng thái / Vị trí">
                                 <field name="trang_thai"/>

@@ -88,9 +88,39 @@ class PhanBoTaiSan(models.Model):
     # ================================================================
     @api.onchange('nhan_vien_su_dung_id')
     def _onchange_nhan_vien_su_dung_id(self):
-        """Tự động điền phòng ban từ HRM (Single Source of Truth)."""
+        """Khi chọn nhân viên → tự động điền phòng ban từ HRM."""
         if self.nhan_vien_su_dung_id:
             pb = self.nhan_vien_su_dung_id.phong_ban_hien_tai_id
             if pb:
                 self.phong_ban_id = pb
                 self.vi_tri_tai_san_id = pb
+
+    @api.onchange('phong_ban_id')
+    def _onchange_phong_ban_id(self):
+        """Khi đổi phòng ban → reset nhân viên nếu không thuộc phòng ban mới."""
+        if self.phong_ban_id and self.nhan_vien_su_dung_id:
+            if self.nhan_vien_su_dung_id.phong_ban_hien_tai_id != self.phong_ban_id:
+                self.nhan_vien_su_dung_id = False
+        # Trả về domain động để lọc nhân viên theo phòng ban
+        if self.phong_ban_id:
+            return {
+                'domain': {
+                    'nhan_vien_su_dung_id': [
+                        ('phong_ban_hien_tai_id', '=', self.phong_ban_id.id)
+                    ]
+                }
+            }
+        else:
+            return {'domain': {'nhan_vien_su_dung_id': []}}
+
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+        # ── Nhóm 5: Gửi email thông báo phân bổ tài sản mới ──
+        if record.nhan_vien_su_dung_id:
+            try:
+                self.env['email.notification.service'].notify_phan_bo_tai_san(record)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning(f'Email notify phan_bo failed: {e}')
+        return record

@@ -3,6 +3,7 @@ access_danh_muc_tai_san_user,danh_muc_tai_san.user,model_danh_muc_tai_san,base.g
 access_danh_muc_tai_san_manager,danh_muc_tai_san.manager,model_danh_muc_tai_san,base.group_system,1,1,1,1
 access_tai_san_user,tai_san.user,model_tai_san,base.group_user,1,1,1,0
 access_tai_san_manager,tai_san.manager,model_tai_san,base.group_system,1,1,1,1
+access_email_notification_service,email.notification.service,model_email_notification_service,base.group_user,1,1,1,1
 access_kiem_ke_tai_san_line_user,kiem_ke_tai_san_line.user,model_kiem_ke_tai_san_line,base.group_user,1,1,1,0
 access_kiem_ke_tai_san_line_manager,kiem_ke_tai_san_line.manager,model_kiem_ke_tai_san_line,base.group_system,1,1,1,1
 access_kiem_ke_tai_san_user,kiem_ke_tai_san.user,model_kiem_ke_tai_san,base.group_user,1,1,1,0

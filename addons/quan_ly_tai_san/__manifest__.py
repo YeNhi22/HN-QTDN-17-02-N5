@@ -27,6 +27,7 @@
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'data/cron_muon_tra.xml',
+        'data/email_config.xml',
         'views/danh_muc_tai_san.xml',
         'views/kiem_ke_tai_san.xml',
         'views/lich_su_khau_hao.xml',

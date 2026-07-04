@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ══════════════════════════════════════════════════
+             SMTP Gmail – Nhóm 5
+             ⚠️  Sau khi cài đặt, vào:
+             Thiết lập → Kỹ thuật → Email → Máy chủ gửi thư
+             và cập nhật username/password đúng Gmail của bạn
+        ══════════════════════════════════════════════════ -->
+        <record id="smtp_gmail_nhom5" model="ir.mail_server">
+            <field name="name">Gmail – Nhóm 5 FIT-DNU</field>
+            <field name="smtp_host">smtp.gmail.com</field>
+            <field name="smtp_port">587</field>
+            <field name="smtp_encryption">starttls</field>
+            <field name="smtp_user">vego.tech555@gmail.com</field>
+            <field name="smtp_pass">xkmi qagq dfzf uwcs</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════════
+             Cron: Nhắc nhở sắp quá hạn trả tài sản
+             Chạy mỗi ngày lúc 8:00 sáng
+        ══════════════════════════════════════════════════ -->
+        <record id="cron_nhac_qua_han_tai_san" model="ir.cron">
+            <field name="name">Nhắc nhở: Sắp quá hạn trả tài sản</field>
+            <field name="model_id" ref="quan_ly_tai_san.model_email_notification_service"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_notify_sap_qua_han()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+            <field name="doall">False</field>
+        </record>
+
+    </data>
+</odoo>

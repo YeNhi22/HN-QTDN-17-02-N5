@@ -332,6 +332,12 @@ class DonMuonTaiSan(models.Model):
             'nguoi_duyet_id': muon_tra.nguoi_duyet_id.id,
             'ngay_duyet': muon_tra.ngay_duyet,
         })
+        # ── Nhóm 5: Gửi email thông báo phê duyệt ────────────
+        try:
+            self.env['email.notification.service'].notify_don_muon_duyet(self)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(f'Email notify approved failed: {e}')
 
     def sync_from_muon_tra_rejected(self, muon_tra):
         """Đồng bộ trạng thái từ chối từ phiếu mượn trả."""
@@ -342,6 +348,13 @@ class DonMuonTaiSan(models.Model):
             'ngay_duyet': muon_tra.ngay_duyet,
             'ly_do_tu_choi': muon_tra.ly_do_tu_choi,
         })
+        # ── Nhóm 5: Gửi email thông báo từ chối ──────────────
+        try:
+            self.env['email.notification.service'].notify_don_muon_tu_choi(
+                self, muon_tra.ly_do_tu_choi or '')
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(f'Email notify rejected failed: {e}')
 
     def sync_from_muon_tra_borrowed(self, muon_tra):
         """Đồng bộ trạng thái đang mượn từ phiếu mượn trả."""
@@ -493,6 +506,13 @@ class DonMuonTaiSan(models.Model):
             record.message_post(
                 body=_('📤 Đơn mượn đã gửi phê duyệt. Mã phiếu: %s') % muon_tra.ma_phieu_muon_tra
             )
+
+            # ── Nhóm 5: Gửi email xác nhận cho nhân viên ────────
+            try:
+                self.env['email.notification.service'].notify_don_muon_gui_duyet(record)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning(f'Email notify failed: {e}')
 
             self.env['system.event'].safe_emit(
                 'don_muon.submitted',

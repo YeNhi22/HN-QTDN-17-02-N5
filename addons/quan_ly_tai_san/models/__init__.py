@@ -6,3 +6,4 @@ from . import thanh_ly_tai_san
 from . import kiem_ke_tai_san_line, kiem_ke_tai_san, luan_chuyen_tai_san_line, luan_chuyen_tai_san
 from . import dashboard
 from . import de_xuat_mua_tai_san
+from . import email_service  # Nhóm 5: dịch vụ gửi email thông báo
