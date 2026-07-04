@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'web', 'nhan_su', 'hr', 'account'],
+    'depends': ['base', 'web', 'nhan_su', 'account'],
 
     # always loaded
     'data': [
@@ -63,6 +63,7 @@
     
     'installable': True,
     'application': True,
+    'license': 'LGPL-3',
     'demo': [
         'data/tai_san_demo.xml',
     ],

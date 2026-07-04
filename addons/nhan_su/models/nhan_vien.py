@@ -57,6 +57,12 @@ class NhanVien(models.Model):
     web_password_hash = fields.Char("Mật khẩu (hash)")
     is_web_active = fields.Boolean("Kích hoạt web", default=False)
     last_login = fields.Datetime("Đăng nhập lần cuối")
+    gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính")
+    trang_thai = fields.Selection([
+        ('dang_lam', 'Đang làm việc'),
+        ('nghi_viec', 'Nghỉ việc'),
+        ('tam_nghi', 'Tạm nghỉ'),
+    ], string="Trạng thái", default='dang_lam')
 
     @api.depends('ngay_sinh')
     def _compute_tuoi(self):

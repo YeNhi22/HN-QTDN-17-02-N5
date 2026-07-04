@@ -17,6 +17,8 @@
                             </group>
                             <group string="Liên hệ">
                                 <field name="que_quan" />
+                                <field name="gioi_tinh" />
+                                <field name="trang_thai" />
                                 <field name="email" />
                                 <field name="so_dien_thoai" />
                             </group>

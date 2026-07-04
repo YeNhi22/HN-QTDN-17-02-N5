@@ -50,6 +50,7 @@
         'views/integration_views.xml',
         'security/ocr_security.xml',
         'views/menu.xml',
+        'views/hide_menus.xml',
     ],
 
     # Assets
