@@ -44,7 +44,8 @@
                             <page string="Tài khoản Web">
                                 <group>
                                     <group string="Thông tin đăng nhập">
-                                        <field name="web_username" />
+                                        <field name="web_username"
+                                               placeholder="vd: nv001 (để trống = không có tài khoản)"/>
                                         <field name="is_web_active" widget="boolean_toggle"/>
                                         <field name="last_login" readonly="1"/>
                                     </group>
@@ -53,9 +54,19 @@
                                     </group>
                                 </group>
                                 <div class="alert alert-info" role="alert">
-                                    <strong>Lưu ý:</strong> Mật khẩu mặc định là <code>123456</code>. 
-                                    Nhân viên có thể đổi mật khẩu thông qua web app.
+                                    <strong>Lưu ý:</strong>
+                                    Khi điền <strong>Tên đăng nhập web</strong> và lưu,
+                                    mật khẩu mặc định sẽ tự động được đặt là <code>123456</code>
+                                    và tài khoản được kích hoạt.
+                                    Nhân viên có thể đổi mật khẩu qua web app.
+                                    <br/>
+                                    Để reset mật khẩu về <code>123456</code>, dùng nút bên dưới.
                                 </div>
+                                <button name="action_reset_web_password"
+                                        string="🔑 Đặt lại mật khẩu về 123456"
+                                        type="object"
+                                        class="btn-warning"
+                                        attrs="{'invisible': [('web_username', '=', False)]}"/>
                             </page>
                         </notebook>
                     </sheet>

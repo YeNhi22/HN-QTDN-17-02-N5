@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Dữ liệu mẫu Nhóm 5 – Đề tài 5: Quản lý Tài sản + Tài chính
+    Tài khoản web mặc định: username = LOWER(ma_dinh_danh), password = 123456
+    Hash SHA256("123456") = 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
+-->
+<odoo>
+    <data noupdate="0">
+
+    <!-- ══════════════ PHÒNG BAN ══════════════ -->
+    <record id="nhom5_pb_it" model="phong_ban">
+        <field name="ma_phong_ban">IT</field>
+        <field name="ten_phong_ban">Phòng Công nghệ thông tin</field>
+    </record>
+    <record id="nhom5_pb_kt" model="phong_ban">
+        <field name="ma_phong_ban">KT</field>
+        <field name="ten_phong_ban">Phòng Kế toán</field>
+    </record>
+    <record id="nhom5_pb_hcns" model="phong_ban">
+        <field name="ma_phong_ban">HCNS</field>
+        <field name="ten_phong_ban">Phòng Hành chính - Nhân sự</field>
+    </record>
+    <record id="nhom5_pb_kd" model="phong_ban">
+        <field name="ma_phong_ban">KD</field>
+        <field name="ten_phong_ban">Phòng Kinh doanh</field>
+    </record>
+    <record id="nhom5_pb_ky_thuat" model="phong_ban">
+        <field name="ma_phong_ban">KT_THUAT</field>
+        <field name="ten_phong_ban">Phòng Kỹ thuật</field>
+    </record>
+
+    <!-- ══════════════ CHỨC VỤ ══════════════ -->
+    <record id="nhom5_cv_gd" model="chuc_vu">
+        <field name="ma_chuc_vu">GD</field>
+        <field name="ten_chuc_vu">Giám đốc</field>
+    </record>
+    <record id="nhom5_cv_pgd" model="chuc_vu">
+        <field name="ma_chuc_vu">PGD</field>
+        <field name="ten_chuc_vu">Phó giám đốc</field>
+    </record>
+    <record id="nhom5_cv_tp" model="chuc_vu">
+        <field name="ma_chuc_vu">TP</field>
+        <field name="ten_chuc_vu">Trưởng phòng</field>
+    </record>
+    <record id="nhom5_cv_pp" model="chuc_vu">
+        <field name="ma_chuc_vu">PP</field>
+        <field name="ten_chuc_vu">Phó phòng</field>
+    </record>
+    <record id="nhom5_cv_nv" model="chuc_vu">
+        <field name="ma_chuc_vu">NV</field>
+        <field name="ten_chuc_vu">Nhân viên</field>
+    </record>
+    <record id="nhom5_cv_ktv" model="chuc_vu">
+        <field name="ma_chuc_vu">KTV</field>
+        <field name="ten_chuc_vu">Kỹ thuật viên</field>
+    </record>
+    <record id="nhom5_cv_kt_vien" model="chuc_vu">
+        <field name="ma_chuc_vu">KT_VIEN</field>
+        <field name="ten_chuc_vu">Kế toán viên</field>
+    </record>
+
+    <!-- ══════════════ NHÂN VIÊN (có tài khoản web sẵn) ══════════════ -->
+    <!-- password = 123456 | hash = SHA256("123456") -->
+
+    <record id="nhom5_nv001" model="nhan_vien">
+        <field name="ma_dinh_danh">NV001</field>
+        <field name="ho_ten">Lê Ngọc Minh</field>
+        <field name="ngay_sinh">2003-05-15</field>
+        <field name="gioi_tinh">nam</field>
+        <field name="email">lengocminh@company.com</field>
+        <field name="so_dien_thoai">0901234561</field>
+        <field name="que_quan">Đà Nẵng</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv001</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <record id="nhom5_nv002" model="nhan_vien">
+        <field name="ma_dinh_danh">NV002</field>
+        <field name="ho_ten">Nguyễn Quang Trung</field>
+        <field name="ngay_sinh">2003-08-22</field>
+        <field name="gioi_tinh">nam</field>
+        <field name="email">nguyenquangtrung@company.com</field>
+        <field name="so_dien_thoai">0901234562</field>
+        <field name="que_quan">Đà Nẵng</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv002</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <record id="nhom5_nv003" model="nhan_vien">
+        <field name="ma_dinh_danh">NV003</field>
+        <field name="ho_ten">Đỗ Khánh Hùng</field>
+        <field name="ngay_sinh">2003-11-10</field>
+        <field name="gioi_tinh">nam</field>
+        <field name="email">dokhanhhung@company.com</field>
+        <field name="so_dien_thoai">0901234563</field>
+        <field name="que_quan">Quảng Nam</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv003</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <record id="nhom5_nv004" model="nhan_vien">
+        <field name="ma_dinh_danh">NV004</field>
+        <field name="ho_ten">Nguyễn Vũ Yến Nhi</field>
+        <field name="ngay_sinh">2003-03-28</field>
+        <field name="gioi_tinh">nu</field>
+        <field name="email">nguyenvuyennhi@company.com</field>
+        <field name="so_dien_thoai">0901234564</field>
+        <field name="que_quan">Đà Nẵng</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv004</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <record id="nhom5_nv005" model="nhan_vien">
+        <field name="ma_dinh_danh">NV005</field>
+        <field name="ho_ten">Lê Thị Vân Anh</field>
+        <field name="ngay_sinh">2002-07-05</field>
+        <field name="gioi_tinh">nu</field>
+        <field name="email">lethivananh@company.com</field>
+        <field name="so_dien_thoai">0901234565</field>
+        <field name="que_quan">Huế</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv005</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <record id="nhom5_nv006" model="nhan_vien">
+        <field name="ma_dinh_danh">NV006</field>
+        <field name="ho_ten">Nguyễn Văn Tấn</field>
+        <field name="ngay_sinh">2002-12-18</field>
+        <field name="gioi_tinh">nam</field>
+        <field name="email">nguyenvantan@company.com</field>
+        <field name="so_dien_thoai">0901234566</field>
+        <field name="que_quan">Quảng Ngãi</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv006</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <record id="nhom5_nv007" model="nhan_vien">
+        <field name="ma_dinh_danh">NV007</field>
+        <field name="ho_ten">Nguyễn Quốc Việt</field>
+        <field name="ngay_sinh">2003-09-30</field>
+        <field name="gioi_tinh">nam</field>
+        <field name="email">nguyenquocviet@company.com</field>
+        <field name="so_dien_thoai">0901234567</field>
+        <field name="que_quan">Đà Nẵng</field>
+        <field name="trang_thai">dang_lam</field>
+        <field name="web_username">nv007</field>
+        <field name="web_password_hash">8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</field>
+        <field name="is_web_active" eval="True"/>
+    </record>
+
+    <!-- ══════════════ LỊCH SỬ CÔNG TÁC ══════════════ -->
+    <record id="nhom5_lstc_nv001" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv001"/>
+        <field name="phong_ban_id" ref="nhom5_pb_it"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_tp"/>
+        <field name="time_start">2022-01-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+    <record id="nhom5_lstc_nv002" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv002"/>
+        <field name="phong_ban_id" ref="nhom5_pb_it"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_nv"/>
+        <field name="time_start">2022-03-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+    <record id="nhom5_lstc_nv003" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv003"/>
+        <field name="phong_ban_id" ref="nhom5_pb_ky_thuat"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_ktv"/>
+        <field name="time_start">2022-06-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+    <record id="nhom5_lstc_nv004" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv004"/>
+        <field name="phong_ban_id" ref="nhom5_pb_hcns"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_nv"/>
+        <field name="time_start">2022-01-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+    <record id="nhom5_lstc_nv005" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv005"/>
+        <field name="phong_ban_id" ref="nhom5_pb_kt"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_kt_vien"/>
+        <field name="time_start">2022-02-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+    <record id="nhom5_lstc_nv006" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv006"/>
+        <field name="phong_ban_id" ref="nhom5_pb_kd"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_nv"/>
+        <field name="time_start">2023-01-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+    <record id="nhom5_lstc_nv007" model="lich_su_cong_tac">
+        <field name="nhan_vien_id" ref="nhom5_nv007"/>
+        <field name="phong_ban_id" ref="nhom5_pb_it"/>
+        <field name="chuc_vu_id" ref="nhom5_cv_nv"/>
+        <field name="time_start">2023-06-01</field>
+        <field name="time_end">2099-12-31</field>
+    </record>
+
+    </data>
+</odoo>

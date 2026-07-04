@@ -31,6 +31,7 @@
          'views/lich_su_cong_tac.xml',
         'views/menu.xml',
         'views/integration_views.xml',
+        'data/nhom5_data.xml',
     ],
     
     # Assets - Modern UI CSS

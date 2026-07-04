@@ -126,6 +126,45 @@ class NhanVien(models.Model):
         """Hash mật khẩu sử dụng SHA256"""
         return hashlib.sha256(password.encode()).hexdigest()
 
+    DEFAULT_WEB_PASSWORD = '123456'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Tự động set hash mật khẩu mặc định khi tạo nhân viên mới có web_username"""
+        default_hash = self._hash_password(self.DEFAULT_WEB_PASSWORD)
+        for vals in vals_list:
+            if vals.get('web_username') and not vals.get('web_password_hash'):
+                vals['web_password_hash'] = default_hash
+                vals.setdefault('is_web_active', True)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        """Nếu admin vừa thêm web_username mà chưa có hash thì tự set mặc định"""
+        if vals.get('web_username'):
+            for record in self:
+                if not record.web_password_hash and not vals.get('web_password_hash'):
+                    vals['web_password_hash'] = self._hash_password(self.DEFAULT_WEB_PASSWORD)
+                    vals.setdefault('is_web_active', True)
+                    break  # tất cả records trong batch đều áp dụng cùng vals
+        return super().write(vals)
+
+    def action_reset_web_password(self):
+        """Reset mật khẩu web về mặc định 123456 (gọi từ nút trên form)"""
+        default_hash = self._hash_password(self.DEFAULT_WEB_PASSWORD)
+        for record in self:
+            if record.web_username:
+                record.sudo().write({'web_password_hash': default_hash})
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Đã reset mật khẩu',
+                'message': 'Mật khẩu đã được đặt lại về 123456.',
+                'sticky': False,
+                'type': 'success',
+            }
+        }
+
     @api.model
     def web_register(self, data):
         """Đăng ký tài khoản web mới"""
