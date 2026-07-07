@@ -10,7 +10,10 @@
                         <div class="oe_read_only" style="font-size:25px">Nhân viên</div>
                         <group>
                             <group string="Thông tin chung">
-                                <field name="ma_dinh_danh" />
+                                <field name="ma_dinh_danh"
+                                       readonly="1"
+                                       placeholder="Tự động sinh (NV001, NV002...)"
+                                       help="Tự động sinh theo thứ tự, không thể trùng"/>
                                 <field name="ho_ten" />
                                 <field name="ngay_sinh" />
                                 <field name="tuoi" readonly="1"/>
@@ -38,16 +41,22 @@
                                        help="Tự động lấy từ lịch sử công tác gần nhất"/>
                             </group>
                         </group>
-
                         <notebook>
                             <page string="Lịch sử công tác">
-                                <field name="lich_su_cong_tac_ids"/>
+                                <field name="lich_su_cong_tac_ids">
+                                    <tree editable="bottom">
+                                        <field name="phong_ban_id"/>
+                                        <field name="chuc_vu_id"/>
+                                        <field name="time_start"/>
+                                        <field name="time_end"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Tài khoản Web">
                                 <group>
                                     <group string="Thông tin đăng nhập">
                                         <field name="web_username"
-                                               placeholder="vd: nv001 (để trống = không có tài khoản)"/>
+                                               placeholder="vd: nv008 (để trống = không có tài khoản)"/>
                                         <field name="is_web_active" widget="boolean_toggle"/>
                                         <field name="last_login" readonly="1"/>
                                     </group>

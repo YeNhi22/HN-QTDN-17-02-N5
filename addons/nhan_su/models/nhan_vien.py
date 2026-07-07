@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
-from odoo.exceptions import UserError, AccessDenied
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 import hashlib
 
 # Cải tiến từ phiên bản cũ: Thêm phong_ban_id và chuc_vu_id trực tiếp vào model
@@ -13,7 +13,14 @@ class NhanVien(models.Model):
     _description = 'Bảng chứa thông tin nhân viên'
     _rec_name = 'ho_ten'
 
-    ma_dinh_danh = fields.Char("Mã định danh", required=True)
+    _sql_constraints = [
+        ('ma_dinh_danh_unique', 'UNIQUE(ma_dinh_danh)',
+         'Mã định danh nhân viên đã tồn tại, vui lòng dùng mã khác.'),
+        ('web_username_unique', 'UNIQUE(web_username)',
+         'Tên đăng nhập web đã tồn tại, vui lòng dùng tên khác.'),
+    ]
+
+    ma_dinh_danh = fields.Char("Mã định danh", required=True, copy=False, default='New')
     ho_ten = fields.Char("Họ tên", required=True, default='')
     ngay_sinh = fields.Date("Ngày sinh")
     que_quan = fields.Char("Quê quán")
@@ -134,24 +141,69 @@ class NhanVien(models.Model):
 
     DEFAULT_WEB_PASSWORD = '123456'
 
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'ma_dinh_danh' in fields_list:
+            res['ma_dinh_danh'] = self.env['sequence.helper'].get_default_code(
+                'nhan_vien', 'ma_dinh_danh', 'nhan_vien.ma_dinh_danh', 'NV'
+            )
+        return res
+
     @api.model_create_multi
     def create(self, vals_list):
-        """Tự động set hash mật khẩu mặc định khi tạo nhân viên mới có web_username"""
+        """Tự sinh mã NV001+, hash mật khẩu mặc định, sync sequence."""
+        # Tự sinh mã định danh duy nhất (xử lý trống và trùng lặp khi import)
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_dinh_danh', 'nhan_vien.ma_dinh_danh', 'NV', 'nhan_vien'
+        )
+        
         default_hash = self._hash_password(self.DEFAULT_WEB_PASSWORD)
         for vals in vals_list:
+            # Luôn tự động gán web_username theo mã định danh duy nhất để tránh lỗi trùng lặp khi import
+            if vals.get('ma_dinh_danh'):
+                vals['web_username'] = vals['ma_dinh_danh'].lower()
+            
+            # Hash mật khẩu mặc định
             if vals.get('web_username') and not vals.get('web_password_hash'):
                 vals['web_password_hash'] = default_hash
                 vals.setdefault('is_web_active', True)
-        return super().create(vals_list)
+
+        records = super().create(vals_list)
+        return records
+
+    @api.model
+    def _sync_sequence_after_import(self):
+        """Đảm bảo sequence luôn nhảy đúng sau khi import CSV có mã cố định."""
+        try:
+            seq = self.env['ir.sequence'].search(
+                [('code', '=', 'nhan_vien.ma_dinh_danh')], limit=1)
+            if not seq:
+                return
+            # Lấy số lớn nhất hiện có từ các mã dạng NVxxx
+            all_codes = self.sudo().search_read(
+                [('ma_dinh_danh', '=like', 'NV%')], ['ma_dinh_danh'])
+            max_num = 0
+            for rec in all_codes:
+                try:
+                    num = int(rec['ma_dinh_danh'][2:])
+                    if num > max_num:
+                        max_num = num
+                except (ValueError, IndexError):
+                    pass
+            if max_num >= seq.number_next:
+                seq.sudo().write({'number_next': max_num + 1})
+        except Exception:
+            pass  # Không block luồng chính nếu sync thất bại
 
     def write(self, vals):
-        """Nếu admin vừa thêm web_username mà chưa có hash thì tự set mặc định"""
+        """Nếu admin vừa thêm web_username mà chưa có hash thì tự set mặc định."""
         if vals.get('web_username'):
             for record in self:
                 if not record.web_password_hash and not vals.get('web_password_hash'):
                     vals['web_password_hash'] = self._hash_password(self.DEFAULT_WEB_PASSWORD)
                     vals.setdefault('is_web_active', True)
-                    break  # tất cả records trong batch đều áp dụng cùng vals
+                    break
         return super().write(vals)
 
     def action_reset_web_password(self):

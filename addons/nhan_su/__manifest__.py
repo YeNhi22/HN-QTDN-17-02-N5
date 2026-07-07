@@ -25,13 +25,13 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/nhan_vien.xml',
          'views/phong_ban.xml',
          'views/chuc_vu.xml',
          'views/lich_su_cong_tac.xml',
         'views/menu.xml',
         'views/integration_views.xml',
-        'data/nhom5_data.xml',
     ],
     
     # Assets - Modern UI CSS
@@ -43,6 +43,7 @@
     
     # Dữ liệu mẫu — chỉ load khi tạo DB có tick "Demo data"
     'demo': [
+        'data/nhom5_data.xml',
         'data/qlns_demo.xml',
     ],
     'installable': True,

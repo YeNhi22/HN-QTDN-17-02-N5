@@ -10,7 +10,7 @@ class KiemKeTaiSan(models.Model):
     ]
 
     rec_name = fields.Char(compute='_compute_rec_name', store=True)
-    ma_phieu_kiem_ke = fields.Char('Mã phiếu', default="KKTS-", required=True)
+    ma_phieu_kiem_ke = fields.Char('Mã phiếu', default='New', required=True, copy=False)
     ten_phieu_kiem_ke = fields.Char('Tên phiếu', required=True)
     phong_ban_id = fields.Many2one('phong_ban', string='Bộ phận cần kiểm kê', required=False, ondelete='set null')
     nhan_vien_kiem_ke_id = fields.Many2one('nhan_vien', string='Nhân viên kiểm kê', ondelete='set null')
@@ -36,6 +36,22 @@ class KiemKeTaiSan(models.Model):
     def _compute_rec_name(self):
         for record in self:
             record.rec_name = record.ma_phieu_kiem_ke + ' - ' + record.ten_phieu_kiem_ke
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'ma_phieu_kiem_ke' in fields_list:
+            res['ma_phieu_kiem_ke'] = self.env['sequence.helper'].get_default_code(
+                'kiem_ke_tai_san', 'ma_phieu_kiem_ke', 'kiem_ke_tai_san', 'KKTS'
+            )
+        return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_phieu_kiem_ke', 'kiem_ke_tai_san', 'KKTS', 'kiem_ke_tai_san'
+        )
+        return super(KiemKeTaiSan, self).create(vals_list)
 
     @api.depends('ds_kiem_ke_ids.trang_thai')
     def _compute_trang_thai_phieu(self):

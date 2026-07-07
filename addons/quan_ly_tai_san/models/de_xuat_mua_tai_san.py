@@ -86,22 +86,31 @@ class DeXuatMuaTaiSan(models.Model):
 
     # ============ CRUD ============
     @api.model
-    def create(self, vals):
-        if vals.get('ma_de_xuat', 'New') == 'New':
-            vals['ma_de_xuat'] = (
-                self.env['ir.sequence'].next_by_code('de_xuat_mua_tai_san') or 'New'
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'ma_de_xuat' in fields_list:
+            res['ma_de_xuat'] = self.env['sequence.helper'].get_default_code(
+                'de_xuat_mua_tai_san', 'ma_de_xuat', 'de_xuat_mua_tai_san', 'DXTS'
             )
-        if not vals.get('phong_ban_id') and vals.get('nguoi_de_xuat_id'):
-            nv = self._resolve_nhan_vien_from_user(vals.get('nguoi_de_xuat_id'))
-            if nv:
-                vals['nhan_vien_id'] = nv.id
-                if nv.phong_ban_hien_tai_id:
+        return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_de_xuat', 'de_xuat_mua_tai_san', 'DXTS', 'de_xuat_mua_tai_san'
+        )
+        for vals in vals_list:
+            if not vals.get('phong_ban_id') and vals.get('nguoi_de_xuat_id'):
+                nv = self._resolve_nhan_vien_from_user(vals.get('nguoi_de_xuat_id'))
+                if nv:
+                    vals['nhan_vien_id'] = nv.id
+                    if nv.phong_ban_hien_tai_id:
+                        vals['phong_ban_id'] = nv.phong_ban_hien_tai_id.id
+            if vals.get('nhan_vien_id') and not vals.get('phong_ban_id'):
+                nv = self.env['nhan_vien'].browse(vals.get('nhan_vien_id'))
+                if nv and nv.phong_ban_hien_tai_id:
                     vals['phong_ban_id'] = nv.phong_ban_hien_tai_id.id
-        if vals.get('nhan_vien_id') and not vals.get('phong_ban_id'):
-            nv = self.env['nhan_vien'].browse(vals['nhan_vien_id'])
-            if nv.phong_ban_hien_tai_id:
-                vals['phong_ban_id'] = nv.phong_ban_hien_tai_id.id
-        return super().create(vals)
+        return super().create(vals_list)
 
     @api.model
     def _resolve_nhan_vien_from_user(self, user_id):

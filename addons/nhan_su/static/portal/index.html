@@ -5,108 +5,428 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Cổng Nhân Viên – Nhóm 5</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
-:root{--primary:#1e3a5f;--accent:#2d9cdb;--green:#10b981;--red:#ef4444;--yellow:#f59e0b}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#f8fafc;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(45, 156, 219, 0.03) 0px, transparent 50%);
+  color:#1e293b;
+  min-height:100vh;
+}
+:root{
+  --primary:#0f172a;
+  --primary-light:#1e293b;
+  --accent:#3b82f6;
+  --accent-light:#eff6ff;
+  --green:#10b981;
+  --green-light:#ecfdf5;
+  --red:#ef4444;
+  --red-light:#fef2f2;
+  --yellow:#f59e0b;
+  --yellow-light:#fffbeb;
+  --gray:#64748b;
+  --gray-light:#f8fafc;
+  --border:#e2e8f0;
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  --hover-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -6px rgba(0, 0, 0, 0.03);
+}
 
 /* ── LAYOUT ── */
 #app{display:flex;flex-direction:column;min-height:100vh}
-.topbar{background:var(--primary);color:white;display:flex;align-items:center;
-  justify-content:space-between;padding:12px 20px;gap:12px;position:sticky;top:0;z-index:100}
-.topbar .logo{font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px}
-.topbar .user-info{display:flex;align-items:center;gap:12px;font-size:13px}
-.btn-logout{background:rgba(255,255,255,.15);border:none;color:white;padding:6px 12px;
-  border-radius:6px;cursor:pointer;font-size:12px}
-.btn-logout:hover{background:rgba(255,255,255,.25)}
-.main-content{flex:1;padding:20px;max-width:1200px;margin:0 auto;width:100%}
-</style>
+.topbar{
+  background:rgba(15, 23, 42, 0.96);
+  backdrop-filter:blur(8px);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 24px;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+}
+.topbar .logo{font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px;letter-spacing:-0.5px}
+.topbar .logo span{
+  background:linear-gradient(90deg, #60a5fa, #a5b4fc);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.topbar .user-info{display:flex;align-items:center;gap:16px;font-size:13px}
+.btn-logout{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  color:white;
+  padding:8px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:600;
+  transition:all 0.2s;
+}
+.btn-logout:hover{
+  background:#ef4444;
+  border-color:#ef4444;
+  transform:translateY(-1px);
+}
+.main-content{flex:1;padding:24px;max-width:1200px;margin:0 auto;width:100%}
 
-<style>
 /* ── NAV TABS ── */
-.nav-tabs{display:flex;gap:4px;background:white;border-radius:10px;padding:6px;
-  box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:20px;flex-wrap:wrap}
-.nav-tab{padding:8px 16px;border-radius:7px;border:none;cursor:pointer;
-  font-size:13px;font-weight:500;color:#64748b;background:transparent;transition:.15s}
-.nav-tab.active{background:var(--primary);color:white}
-.nav-tab:hover:not(.active){background:#f1f5f9}
+.nav-tabs{
+  display:flex;
+  gap:6px;
+  background:white;
+  border-radius:12px;
+  padding:6px;
+  box-shadow:var(--card-shadow);
+  border:1px solid var(--border);
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.nav-tab{
+  padding:10px 18px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:600;
+  color:var(--gray);
+  background:transparent;
+  transition:all 0.2s ease;
+}
+.nav-tab.active{
+  background:var(--accent-light);
+  color:var(--accent);
+}
+.nav-tab:hover:not(.active){
+  background:#f1f5f9;
+  color:var(--primary);
+}
 
 /* ── CARDS ── */
-.card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-.card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;
-  display:flex;align-items:center;gap:8px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.stat-card{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;
-  border-left:4px solid var(--accent)}
-.stat-card.green{border-left-color:var(--green)}
-.stat-card.red{border-left-color:var(--red)}
-.stat-card.yellow{border-left-color:var(--yellow)}
-.stat-num{font-size:28px;font-weight:800;color:var(--primary)}
-.stat-label{font-size:11px;color:#64748b;margin-top:4px}
+.card{
+  background:white;
+  border-radius:16px;
+  padding:24px;
+  border:1px solid var(--border);
+  box-shadow:var(--card-shadow);
+  margin-bottom:20px;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.card:hover{
+  box-shadow:var(--hover-shadow);
+}
+.card-title{
+  font-size:16px;
+  font-weight:800;
+  color:var(--primary);
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  letter-spacing:-0.3px;
+}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.stat-card{
+  background:#ffffff;
+  border-radius:14px;
+  padding:20px;
+  text-align:left;
+  border:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+  transition:all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01);
+}
+.stat-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--card-shadow);
+}
+.stat-card::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:4px;
+  background:var(--accent);
+}
+.stat-card.yellow::before{background:var(--yellow)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.red::before{background:var(--red)}
+
+.stat-num{font-size:32px;font-weight:800;color:var(--primary);line-height:1}
+.stat-label{font-size:12px;font-weight:600;color:var(--gray);margin-top:8px}
 
 /* ── FORM ── */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-group{display:flex;flex-direction:column;gap:5px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
 .form-group.full{grid-column:1/-1}
-label{font-size:12px;font-weight:600;color:#475569}
-input,textarea,select{border:1.5px solid #e2e8f0;border-radius:8px;padding:9px 12px;
-  font-size:13px;outline:none;transition:.15s;width:100%;font-family:inherit}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-textarea{resize:vertical;min-height:80px}
+label{font-size:12px;font-weight:700;color:#334155;text-transform:none}
+input,textarea,select{
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:13px;
+  font-weight:500;
+  outline:none;
+  transition:all 0.15s ease;
+  width:100%;
+  font-family:inherit;
+  background:#f8fafc;
+  color:var(--primary);
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--accent);
+  background:white;
+  box-shadow:0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+textarea{resize:vertical;min-height:90px}
 
 /* ── BUTTONS ── */
-.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;
-  font-weight:600;transition:.15s;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--primary);color:white}
-.btn-primary:hover{background:#2d4a6f}
-.btn-success{background:var(--green);color:white}
-.btn-danger{background:var(--red);color:white}
-.btn-outline{background:white;color:var(--primary);border:1.5px solid var(--primary)}
+.btn{
+  padding:10px 20px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
+  transition:all 0.2s ease;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.btn-primary{
+  background:var(--accent);
+  color:white;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+}
+.btn-primary:hover{
+  background:#2563eb;
+  transform:translateY(-1px);
+}
+.btn-success{
+  background:var(--green);
+  color:white;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+.btn-success:hover{background:#059669}
+.btn-danger{
+  background:var(--red);
+  color:white;
+}
+.btn-outline{
+  background:white;
+  color:var(--primary);
+  border:1.5px solid var(--border);
+}
+.btn-outline:hover{
+  background:#f1f5f9;
+  border-color:var(--gray);
+}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
 /* ── TABLE ── */
+.tbl-container{
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01);
+}
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{background:var(--primary);color:white;padding:10px 12px;text-align:left;font-weight:600}
-.tbl td{padding:9px 12px;border-bottom:1px solid #f1f5f9}
+.tbl th{
+  background:#f8fafc;
+  color:var(--primary);
+  padding:12px 16px;
+  text-align:left;
+  font-weight:700;
+  border-bottom:2px solid var(--border);
+}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--primary-light)}
 .tbl tr:hover td{background:#f8fafc}
-.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600}
-.badge-green{background:#d1fae5;color:#065f46}
-.badge-yellow{background:#fef3c7;color:#92400e}
-.badge-red{background:#fee2e2;color:#991b1b}
-.badge-blue{background:#dbeafe;color:#1e40af}
-.badge-gray{background:#f1f5f9;color:#475569}
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:700;
+}
+.badge-green{background:var(--green-light);color:var(--green)}
+.badge-yellow{background:var(--yellow-light);color:var(--yellow)}
+.badge-red{background:var(--red-light);color:var(--red)}
+.badge-blue{background:var(--accent-light);color:var(--accent)}
+.badge-gray{background:#f1f5f9;color:var(--gray)}
 
 /* ── LOGIN PAGE ── */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#1e3a5f 0%,#2d9cdb 100%);padding:20px}
-.login-box{background:white;border-radius:16px;padding:36px;width:100%;max-width:400px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.login-logo{text-align:center;margin-bottom:24px}
-.login-logo h1{font-size:22px;font-weight:800;color:var(--primary);margin-top:8px}
-.login-logo p{font-size:13px;color:#64748b;margin-top:4px}
-.alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none}
-.alert-error{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;display:block}
-.alert-success{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;display:block}
-.spinner{display:none;width:20px;height:20px;border:2px solid rgba(255,255,255,.3);
+.login-wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(-45deg, #0f172a, #1e293b, #1d4ed8, #0f172a);
+  background-size:400% 400%;
+  animation:gradientBG 15s ease infinite;
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.login-wrap::before{
+  content:'';
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  top:-100px;
+  right:-100px;
+}
+.login-box{
+  background:white;
+  border-radius:24px;
+  padding:40px;
+  width:100%;
+  max-width:420px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  position:relative;
+  z-index:10;
+  border:1px solid rgba(255, 255, 255, 0.1);
+}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo h1{
+  font-size:24px;
+  font-weight:800;
+  color:var(--primary);
+  margin-top:12px;
+  letter-spacing:-0.5px;
+}
+.login-logo p{font-size:14px;color:var(--gray);margin-top:6px}
+.alert{
+  padding:12px 16px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:16px;
+  display:none;
+}
+.alert-error{background:var(--red-light);color:var(--red);border:1px solid rgba(239,68,68,0.2);display:block}
+.alert-success{background:var(--green-light);color:var(--green);border:1px solid rgba(16,185,129,0.2);display:block}
+.spinner{display:none;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);
   border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── PROFILE ── */
+.profile-header{
+  background:linear-gradient(135deg, #1e293b, #0f172a);
+  border-radius:16px;
+  padding:32px;
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  margin-bottom:20px;
+  box-shadow:var(--card-shadow);
+  border:1px solid var(--border);
+}
+.avatar{
+  width:72px;
+  height:72px;
+  border-radius:20px;
+  background:linear-gradient(135deg, var(--accent), #60a5fa);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:800;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+.profile-info h2{font-size:20px;font-weight:800;letter-spacing:-0.3px}
+.profile-info p{font-size:14px;color:#94a3b8;margin-top:6px;font-weight:500}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.info-item{
+  background:#f8fafc;
+  padding:14px 16px;
+  border-radius:10px;
+  border:1px solid var(--border);
+}
+.info-item label{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:0.8px;font-weight:700}
+.info-item p{font-size:14px;font-weight:700;margin-top:6px;color:var(--primary)}
 
 /* ── TABS CONTENT ── */
 .tab-pane{display:none}
 .tab-pane.active{display:block}
 
-/* ── PROFILE ── */
-.profile-header{background:linear-gradient(135deg,var(--primary),#2d9cdb);
-  border-radius:12px;padding:24px;color:white;display:flex;align-items:center;gap:16px;margin-bottom:16px}
-.avatar{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);
-  display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700}
-.profile-info h2{font-size:18px;font-weight:700}
-.profile-info p{font-size:13px;opacity:.85;margin-top:4px}
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.info-item label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
-.info-item p{font-size:14px;font-weight:500;margin-top:2px}
+/* ── MODAL ── */
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(15,23,42,0.6);
+  backdrop-filter:blur(4px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal.active{display:flex}
+.modal-card{
+  background:white;
+  border-radius:16px;
+  width:100%;
+  max-width:550px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  border:1px solid var(--border);
+  overflow:hidden;
+  animation:modalSlide 0.2s ease-out;
+}
+@keyframes modalSlide {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-header{
+  padding:16px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#f8fafc;
+}
+.modal-header h3{font-size:15px;font-weight:800;color:var(--primary)}
+.btn-close-x{
+  background:transparent;
+  border:none;
+  font-size:22px;
+  font-weight:500;
+  color:var(--gray);
+  cursor:pointer;
+  line-height:1;
+}
+.btn-close-x:hover{color:var(--primary)}
+.modal-body{padding:24px;max-height:65vh;overflow-y:auto}
+.modal-footer{
+  padding:16px 24px;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  background:#f8fafc;
+}
 
 /* ── RESPONSIVE ── */
-@media(max-width:600px){
+@media(max-width:768px){
+  .main-content{padding:16px}
   .form-grid{grid-template-columns:1fr}
   .info-grid{grid-template-columns:1fr}
   .stat-grid{grid-template-columns:1fr 1fr}
@@ -123,7 +443,6 @@ textarea{resize:vertical;min-height:80px}
 <div id="login-page" class="login-wrap">
   <div class="login-box">
     <div class="login-logo">
-      <div style="font-size:40px">🏢</div>
       <h1>Cổng Nhân Viên</h1>
       <p>Hệ thống Quản lý Tài sản – Nhóm 5</p>
     </div>
@@ -153,22 +472,22 @@ textarea{resize:vertical;min-height:80px}
 <div id="main-page" style="display:none;flex-direction:column;min-height:100vh">
   <!-- TopBar -->
   <div class="topbar">
-    <div class="logo">🏢 <span>Cổng Nhân Viên</span></div>
+    <div class="logo"><span>Cổng Nhân Viên</span></div>
     <div class="user-info">
       <span id="topbar-name" style="font-weight:600"></span>
-      <button class="btn-logout" onclick="doLogout()">⏻ Đăng xuất</button>
+      <button class="btn-logout" onclick="doLogout()">Đăng xuất</button>
     </div>
   </div>
 
   <!-- Nav -->
   <div style="background:white;padding:8px 20px;border-bottom:1px solid #e2e8f0">
     <div class="nav-tabs" style="margin-bottom:0;box-shadow:none;background:transparent;padding:0">
-      <button class="nav-tab active" onclick="switchTab('tab-home',this)">🏠 Tổng quan</button>
-      <button class="nav-tab" onclick="switchTab('tab-profile',this)">👤 Hồ sơ</button>
-      <button class="nav-tab" onclick="switchTab('tab-assets',this)">📦 Tài sản của tôi</button>
-      <button class="nav-tab" onclick="switchTab('tab-borrow',this)">📋 Đơn mượn</button>
-      <button class="nav-tab" onclick="switchTab('tab-new-borrow',this)">➕ Tạo đơn mượn</button>
-      <button class="nav-tab" onclick="switchTab('tab-password',this)">🔑 Đổi mật khẩu</button>
+      <button class="nav-tab active" onclick="switchTab('tab-home',this)">Tổng quan</button>
+      <button class="nav-tab" onclick="switchTab('tab-profile',this)">Hồ sơ</button>
+      <button class="nav-tab" onclick="switchTab('tab-assets',this)">Tài sản của tôi</button>
+      <button class="nav-tab" onclick="switchTab('tab-borrow',this)">Đơn mượn</button>
+      <button class="nav-tab" onclick="switchTab('tab-new-borrow',this)">Tạo đơn mượn</button>
+      <button class="nav-tab" onclick="switchTab('tab-password',this)">Đổi mật khẩu</button>
     </div>
   </div>
 
@@ -186,7 +505,10 @@ textarea{resize:vertical;min-height:80px}
     <!-- ── TAB 3: TÀI SẢN CỦA TÔI ── -->
     <div id="tab-assets" class="tab-pane">
       <div class="card">
-        <div class="card-title">📦 Tài sản được phân bổ cho tôi</div>
+        <div class="card-title" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <span>Tài sản được phân bổ cho tôi</span>
+          <input id="asset-search" placeholder="Tìm kiếm tài sản..." oninput="filterMyAssets()" style="max-width:250px;padding:6px 12px;font-size:12px;width:auto;margin:0"/>
+        </div>
         <div id="assets-content"><p style="color:#94a3b8">Đang tải...</p></div>
       </div>
     </div>
@@ -194,9 +516,22 @@ textarea{resize:vertical;min-height:80px}
     <!-- ── TAB 4: ĐƠN MƯỢN ── -->
     <div id="tab-borrow" class="tab-pane">
       <div class="card">
-        <div class="card-title" style="justify-content:space-between">
-          <span>📋 Đơn mượn của tôi</span>
-          <button class="btn btn-primary" onclick="loadMyBorrows()">🔄 Làm mới</button>
+        <div class="card-title" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <span>Đơn mượn của tôi</span>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input id="borrow-search" placeholder="Tìm tên đơn, mã..." oninput="filterMyBorrows()" style="max-width:200px;padding:6px 12px;font-size:12px;width:auto;margin:0"/>
+            <select id="borrow-status-filter" onchange="filterMyBorrows()" style="max-width:150px;padding:6px;font-size:12px;width:auto;margin:0">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="nhap">Nháp</option>
+              <option value="cho_duyet">Chờ duyệt</option>
+              <option value="da_duyet">Đã duyệt</option>
+              <option value="dang_muon">Đang mượn</option>
+              <option value="da_tra">Đã trả</option>
+              <option value="tu_choi">Từ chối</option>
+              <option value="huy">Đã hủy</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadMyBorrows()" style="padding:6px 12px;font-size:12px">Làm mới</button>
+          </div>
         </div>
         <div id="borrow-content"><p style="color:#94a3b8">Đang tải...</p></div>
       </div>
@@ -205,7 +540,7 @@ textarea{resize:vertical;min-height:80px}
     <!-- ── TAB 5: TẠO ĐƠN MƯỢN ── -->
     <div id="tab-new-borrow" class="tab-pane">
       <div class="card">
-        <div class="card-title">➕ Tạo đơn mượn tài sản</div>
+        <div class="card-title">Tạo đơn mượn tài sản</div>
         <div id="new-borrow-alert" class="alert"></div>
         <div class="form-grid">
           <div class="form-group">
@@ -229,7 +564,10 @@ textarea{resize:vertical;min-height:80px}
             <textarea id="nb-ly-do" placeholder="Nhập lý do mượn tài sản..."></textarea>
           </div>
           <div class="form-group full">
-            <label>Tài sản muốn mượn</label>
+            <label style="display:flex;justify-content:space-between;align-items:center">
+              <span>Tài sản muốn mượn</span>
+              <input id="asset-borrow-search" placeholder="Tìm tài sản..." oninput="filterBorrowAssets()" style="max-width:200px;padding:4px 8px;font-size:11px;width:auto;margin:0;height:24px"/>
+            </label>
             <div id="nb-tai-san-list" style="max-height:200px;overflow-y:auto;border:1.5px solid #e2e8f0;
               border-radius:8px;padding:8px;font-size:13px;color:#94a3b8">
               Chọn phòng ban để xem tài sản có thể mượn
@@ -237,7 +575,7 @@ textarea{resize:vertical;min-height:80px}
           </div>
         </div>
         <div style="margin-top:16px">
-          <button class="btn btn-primary" onclick="submitBorrow()">📤 Gửi đơn mượn</button>
+          <button class="btn btn-primary" onclick="submitBorrow()">Gửi đơn mượn</button>
         </div>
       </div>
     </div>
@@ -245,7 +583,7 @@ textarea{resize:vertical;min-height:80px}
     <!-- ── TAB 6: ĐỔI MẬT KHẨU ── -->
     <div id="tab-password" class="tab-pane">
       <div class="card" style="max-width:440px">
-        <div class="card-title">🔑 Đổi mật khẩu</div>
+        <div class="card-title">Đổi mật khẩu</div>
         <div id="pw-alert" class="alert"></div>
         <div class="form-group" style="margin-bottom:12px">
           <label>Mật khẩu cũ *</label>
@@ -259,11 +597,26 @@ textarea{resize:vertical;min-height:80px}
           <label>Xác nhận mật khẩu mới *</label>
           <input id="pw-confirm" type="password" placeholder="Nhập lại mật khẩu mới..."/>
         </div>
-        <button class="btn btn-primary" onclick="changePassword()">💾 Cập nhật mật khẩu</button>
+        <button class="btn btn-primary" onclick="changePassword()">Cập nhật mật khẩu</button>
       </div>
     </div>
   </div><!-- end main-content -->
 </div><!-- end main-page -->
+
+<!-- ── DETAIL MODAL ── -->
+<div id="borrow-modal" class="modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Chi tiết đơn mượn tài sản</h3>
+      <button class="btn-close-x" onclick="closeBorrowModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="borrow-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="border:1px solid var(--border);background:white;color:var(--primary)" onclick="closeBorrowModal()">Đóng</button>
+      <button class="btn btn-primary" id="borrow-modal-submit" style="display:none">Gửi duyệt đơn</button>
+    </div>
+  </div>
+</div>
 
 </div><!-- end #app -->
 
@@ -281,17 +634,25 @@ let selectedPhanBoIds = [];
 
 // ── RPC HELPER ─────────────────────────
 async function rpc(model, method, args=[], kwargs={}) {
-  const res = await fetch(`${ODOO_URL}/web/dataset/call_kw`, {
+  const token = localStorage.getItem('portal_token');
+  const res = await fetch(`${ODOO_URL}/api/nhan_su/rpc`, {
     method: 'POST',
-    credentials: 'include',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
-      jsonrpc:'2.0', method:'call', id:1,
-      params: {model, method, args, kwargs}
+      jsonrpc: '2.0',
+      method: 'call',
+      params: {token, model, method, args, kwargs}
     })
   });
   const data = await res.json();
-  if (data.error) throw new Error(data.error.data?.message || data.error.message);
+  if (data.error) {
+    if (data.error.message?.includes('hết hạn') || data.error.data?.message?.includes('hết hạn') || data.error.message?.includes('token') || data.error.data?.message?.includes('token')) {
+      doLogout();
+      alert('Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.');
+      return;
+    }
+    throw new Error(data.error.data?.message || data.error.message);
+  }
   return data.result;
 }
 
@@ -303,35 +664,40 @@ async function searchRead(model, domain=[], fields=[], limit=100) {
 async function doLogin() {
   const username = document.getElementById('inp-username').value.trim();
   const password = document.getElementById('inp-password').value;
-  const alert = document.getElementById('login-alert');
+  const alertEl = document.getElementById('login-alert');
   const spinner = document.getElementById('login-spinner');
   const txt = document.getElementById('login-text');
-  alert.className = 'alert'; alert.textContent = '';
+  alertEl.className = 'alert'; alertEl.textContent = '';
   if (!username || !password) {
-    alert.className='alert alert-error'; alert.textContent='Vui lòng nhập đầy đủ thông tin'; return;
+    alertEl.className='alert alert-error'; alertEl.textContent='Vui lòng nhập đầy đủ thông tin'; return;
   }
   spinner.style.display = 'block'; txt.textContent = 'Đang đăng nhập...';
   document.querySelector('#login-page button').disabled = true;
   try {
-    // Bước 1: Authenticate Odoo session
-    await fetch(`${ODOO_URL}/web/session/authenticate`, {
-      method:'POST', credentials:'include',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({jsonrpc:'2.0',method:'call',
-        params:{db:'quan_ly_btl', login:'admin@admin.com', password:'admin'}})
+    const res = await fetch(`${ODOO_URL}/api/nhan_su/login`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'call',
+        params: {username, password}
+      })
     });
-    // Bước 2: Gọi web_login với thông tin nhân viên
-    const result = await rpc('nhan_vien','web_login',[username, password]);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.data?.message || data.error.message);
+    const result = data.result;
+    
     if (!result.success) {
-      alert.className='alert alert-error'; alert.textContent = result.message;
+      alertEl.className='alert alert-error'; alertEl.textContent = result.message;
     } else {
       currentUser = {...result.employee, web_username: username};
       localStorage.setItem('employee', JSON.stringify(currentUser));
+      localStorage.setItem('portal_token', result.token);
       showMain();
     }
   } catch(e) {
-    alert.className='alert alert-error';
-    alert.textContent = 'Không kết nối được Odoo. Kiểm tra lại URL: ' + ODOO_URL;
+    alertEl.className='alert alert-error';
+    alertEl.textContent = 'Không đăng nhập được: ' + e.message;
   } finally {
     spinner.style.display='none'; txt.textContent='Đăng nhập';
     document.querySelector('#login-page button').disabled=false;
@@ -344,6 +710,7 @@ document.getElementById('inp-password').addEventListener('keydown', e => {
 
 function doLogout() {
   localStorage.removeItem('employee');
+  localStorage.removeItem('portal_token');
   currentUser = null;
   document.getElementById('main-page').style.display = 'none';
   document.getElementById('login-page').style.display = 'flex';
@@ -351,16 +718,39 @@ function doLogout() {
 }
 
 // ── SHOW MAIN ──────────────────────────
-function showMain() {
+async function showMain() {
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('main-page').style.display = 'flex';
-  document.getElementById('topbar-name').textContent =
-    '👤 ' + currentUser.ho_ten;
+  document.getElementById('topbar-name').textContent = currentUser.ho_ten;
   renderHome();
   renderProfile();
   loadMyAssets();
   loadMyBorrows();
   loadPhongBanOptions();
+
+  // Fetch the latest profile data from Odoo to refresh UI dynamically
+  try {
+    const nvs = await searchRead('nhan_vien', [['web_username', '=', currentUser.web_username]], ['id', 'ma_dinh_danh', 'ho_ten', 'email', 'so_dien_thoai', 'tuoi', 'phong_ban_hien_tai_id', 'chuc_vu_hien_tai_id']);
+    if (nvs.length) {
+      const nv = nvs[0];
+      currentUser = {
+        ...currentUser,
+        ma_dinh_danh: nv.ma_dinh_danh,
+        ho_ten: nv.ho_ten,
+        email: nv.email,
+        so_dien_thoai: nv.so_dien_thoai,
+        tuoi: nv.tuoi,
+        phong_ban: nv.phong_ban_hien_tai_id ? nv.phong_ban_hien_tai_id[1] : null,
+        chuc_vu: nv.chuc_vu_hien_tai_id ? nv.chuc_vu_hien_tai_id[1] : null
+      };
+      localStorage.setItem('employee', JSON.stringify(currentUser));
+      document.getElementById('topbar-name').textContent = currentUser.ho_ten;
+      renderHome();
+      renderProfile();
+    }
+  } catch (e) {
+    console.warn("Failed to fetch latest employee info:", e);
+  }
 }
 
 // ── SWITCH TAB ─────────────────────────
@@ -381,7 +771,7 @@ function renderHome() {
   <div class="profile-header">
     <div class="avatar">${currentUser.ho_ten.charAt(0).toUpperCase()}</div>
     <div class="profile-info">
-      <h2>Xin chào, ${currentUser.ho_ten}! 👋</h2>
+      <h2>Xin chào, ${currentUser.ho_ten}!</h2>
       <p>${currentUser.chuc_vu || ''} ${currentUser.phong_ban ? '· ' + currentUser.phong_ban : ''}</p>
     </div>
   </div>
@@ -426,7 +816,7 @@ function renderProfile() {
     </div>
   </div>
   <div class="card">
-    <div class="card-title">👤 Thông tin cá nhân</div>
+    <div class="card-title">Thông tin cá nhân</div>
     <div class="info-grid">
       <div class="info-item"><label>Mã định danh</label><p>${u.ma_dinh_danh || '–'}</p></div>
       <div class="info-item"><label>Họ tên</label><p>${u.ho_ten}</p></div>
@@ -441,74 +831,109 @@ function renderProfile() {
 }
 
 // ── TÀI SẢN CỦA TÔI ───────────────────
+let myAssetsList = [];
 async function loadMyAssets() {
   const el = document.getElementById('assets-content');
   try {
-    const rows = await searchRead('phan_bo_tai_san',
+    myAssetsList = await searchRead('phan_bo_tai_san',
       [['nhan_vien_su_dung_id.web_username','=',currentUser.web_username]],
       ['tai_san_id','ngay_phat','trang_thai','tinh_trang','phong_ban_id','vi_tri_tai_san_id']);
-    if (!rows.length) { el.innerHTML='<p style="color:#94a3b8;text-align:center;padding:24px">Chưa có tài sản nào được phân bổ</p>'; return; }
-    const TINH_TRANG = {binh_thuong:'✅ Bình thường',dang_muon:'📤 Đang mượn',hu_hong:'⚠️ Hư hỏng',mat:'❌ Mất'};
-    el.innerHTML = `
-    <div style="overflow-x:auto">
-    <table class="tbl">
-      <thead><tr>
-        <th>#</th><th>Tài sản</th><th>Phòng ban</th><th>Ngày phân bổ</th><th>Trạng thái</th><th>Tình trạng</th>
-      </tr></thead>
-      <tbody>
-      ${rows.map((r,i)=>`<tr>
-        <td>${i+1}</td>
-        <td><strong>${r.tai_san_id ? r.tai_san_id[1] : '–'}</strong></td>
-        <td>${r.phong_ban_id ? r.phong_ban_id[1] : '–'}</td>
-        <td>${r.ngay_phat || '–'}</td>
-        <td><span class="badge ${r.trang_thai==='in-use'?'badge-green':'badge-gray'}">${r.trang_thai==='in-use'?'Đang dùng':'Không dùng'}</span></td>
-        <td>${TINH_TRANG[r.tinh_trang] || r.tinh_trang}</td>
-      </tr>`).join('')}
-      </tbody>
-    </table></div>`;
+    renderMyAssets(myAssetsList);
   } catch(e) { el.innerHTML=`<p style="color:red">Lỗi: ${e.message}</p>`; }
+}
+
+function renderMyAssets(rows) {
+  const el = document.getElementById('assets-content');
+  if (!rows.length) { el.innerHTML='<p style="color:#94a3b8;text-align:center;padding:24px">Chưa có tài sản nào</p>'; return; }
+  const TINH_TRANG = {binh_thuong:'Bình thường',dang_muon:'Đang mượn',hu_hong:'Hư hỏng',mat:'Mất'};
+  el.innerHTML = `
+  <div style="overflow-x:auto">
+  <table class="tbl">
+    <thead><tr>
+      <th>#</th><th>Tài sản</th><th>Phòng ban</th><th>Ngày phân bổ</th><th>Trạng thái</th><th>Tình trạng</th>
+    </tr></thead>
+    <tbody>
+    ${rows.map((r,i)=>`<tr>
+      <td>${i+1}</td>
+      <td><strong>${r.tai_san_id ? r.tai_san_id[1] : '–'}</strong></td>
+      <td>${r.phong_ban_id ? r.phong_ban_id[1] : '–'}</td>
+      <td>${r.ngay_phat || '–'}</td>
+      <td><span class="badge ${r.trang_thai==='in-use'?'badge-green':'badge-gray'}">${r.trang_thai==='in-use'?'Đang dùng':'Không dùng'}</span></td>
+      <td>${TINH_TRANG[r.tinh_trang] || r.tinh_trang}</td>
+    </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+function filterMyAssets() {
+  const query = document.getElementById('asset-search').value.toLowerCase().trim();
+  const filtered = myAssetsList.filter(r => {
+    const name = (r.tai_san_id ? r.tai_san_id[1] : '').toLowerCase();
+    const pb = (r.phong_ban_id ? r.phong_ban_id[1] : '').toLowerCase();
+    return name.includes(query) || pb.includes(query);
+  });
+  renderMyAssets(filtered);
 }
 </script>
 
 <script>
 // ── ĐƠN MƯỢN CỦA TÔI ─────────────────
+let myBorrowsList = [];
 async function loadMyBorrows() {
   const el = document.getElementById('borrow-content');
   try {
-    const rows = await searchRead('don_muon_tai_san',
+    myBorrowsList = await searchRead('don_muon_tai_san',
       [['nhan_vien_muon_id.web_username','=',currentUser.web_username]],
       ['ma_don_muon','ten_don_muon','trang_thai','thoi_gian_muon','thoi_gian_tra','ly_do','so_tai_san'],
-      50);
-    const BADGE = {
-      nhap:'badge-gray',cho_duyet:'badge-yellow',da_duyet:'badge-blue',
-      dang_muon:'badge-blue',da_tra:'badge-green',tu_choi:'badge-red',huy:'badge-red'
-    };
-    const LABEL = {
-      nhap:'Nháp',cho_duyet:'Chờ duyệt',da_duyet:'Đã duyệt',
-      dang_muon:'Đang mượn',da_tra:'Đã trả',tu_choi:'Từ chối',huy:'Đã hủy'
-    };
-    if (!rows.length) { el.innerHTML='<p style="color:#94a3b8;text-align:center;padding:24px">Chưa có đơn mượn nào</p>'; return; }
-    el.innerHTML = `
-    <div style="overflow-x:auto">
-    <table class="tbl">
-      <thead><tr>
-        <th>Mã đơn</th><th>Tên đơn</th><th>Số TS</th><th>Thời gian mượn</th><th>Hạn trả</th><th>Trạng thái</th>
-      </tr></thead>
-      <tbody>
-      ${rows.map(r=>{
-        const overdue = r.trang_thai==='dang_muon' && new Date(r.thoi_gian_tra)<new Date();
-        return `<tr style="${overdue?'background:#fff7ed':''}">
-          <td><strong>${r.ma_don_muon}</strong></td>
-          <td>${r.ten_don_muon}</td>
-          <td style="text-align:center">${r.so_tai_san||0}</td>
-          <td>${r.thoi_gian_muon ? r.thoi_gian_muon.replace('T',' ').slice(0,16) : '–'}</td>
-          <td style="color:${overdue?'#dc2626':'inherit'}">${r.thoi_gian_tra ? r.thoi_gian_tra.replace('T',' ').slice(0,16) : '–'}${overdue?' ⚠️':''}</td>
-          <td><span class="badge ${BADGE[r.trang_thai]||'badge-gray'}">${LABEL[r.trang_thai]||r.trang_thai}</span></td>
-        </tr>`;
-      }).join('')}
-      </tbody>
-    </table></div>`;
+      100);
+    renderMyBorrows(myBorrowsList);
   } catch(e) { el.innerHTML=`<p style="color:red">Lỗi: ${e.message}</p>`; }
+}
+
+function renderMyBorrows(rows) {
+  const el = document.getElementById('borrow-content');
+  const BADGE = {
+    nhap:'badge-gray',cho_duyet:'badge-yellow',da_duyet:'badge-blue',
+    dang_muon:'badge-blue',da_tra:'badge-green',tu_choi:'badge-red',huy:'badge-red'
+  };
+  const LABEL = {
+    nhap:'Nháp',cho_duyet:'Chờ duyệt',da_duyet:'Đã duyệt',
+    dang_muon:'Đang mượn',da_tra:'Đã trả',tu_choi:'Từ chối',huy:'Đã hủy'
+  };
+  if (!rows.length) { el.innerHTML='<p style="color:#94a3b8;text-align:center;padding:24px">Chưa có đơn mượn nào</p>'; return; }
+  el.innerHTML = `
+  <div style="overflow-x:auto">
+  <table class="tbl">
+    <thead><tr>
+      <th>Mã đơn</th><th>Tên đơn</th><th>Số TS</th><th>Thời gian mượn</th><th>Hạn trả</th><th>Trạng thái</th>
+    </tr></thead>
+    <tbody>
+    ${rows.map(r=>{
+      const overdue = r.trang_thai==='dang_muon' && new Date(r.thoi_gian_tra)<new Date();
+      return `<tr style="${overdue?'background:#fff7ed':''};cursor:pointer" onclick="openBorrowDetail(${r.id})">
+        <td><strong>${r.ma_don_muon}</strong></td>
+        <td>${r.ten_don_muon}</td>
+        <td style="text-align:center">${r.so_tai_san||0}</td>
+        <td>${r.thoi_gian_muon ? r.thoi_gian_muon.replace('T',' ').slice(0,16) : '–'}</td>
+        <td style="color:${overdue?'#dc2626':'inherit'}">${r.thoi_gian_tra ? r.thoi_gian_tra.replace('T',' ').slice(0,16) : '–'}${overdue?' (Quá hạn)':''}</td>
+        <td><span class="badge ${BADGE[r.trang_thai]||'badge-gray'}">${LABEL[r.trang_thai]||r.trang_thai}</span></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+function filterMyBorrows() {
+  const query = document.getElementById('borrow-search').value.toLowerCase().trim();
+  const status = document.getElementById('borrow-status-filter').value;
+  const filtered = myBorrowsList.filter(r => {
+    const code = (r.ma_don_muon || '').toLowerCase();
+    const title = (r.ten_don_muon || '').toLowerCase();
+    const matchQuery = code.includes(query) || title.includes(query);
+    const matchStatus = status === 'all' || r.trang_thai === status;
+    return matchQuery && matchStatus;
+  });
+  renderMyBorrows(filtered);
 }
 
 // ── TẠO ĐƠN MƯỢN ─────────────────────
@@ -531,23 +956,41 @@ async function loadAvailableAssets() {
   const pbId = parseInt(document.getElementById('nb-phong-ban').value);
   const el = document.getElementById('nb-tai-san-list');
   selectedPhanBoIds = [];
+  document.getElementById('asset-borrow-search').value = '';
   if (!pbId) { el.innerHTML='<span style="color:#94a3b8">Chọn phòng ban để xem tài sản có thể mượn</span>'; return; }
   el.innerHTML = '<span style="color:#94a3b8">Đang tải...</span>';
   try {
     availableAssets = await searchRead('phan_bo_tai_san',
       [['phong_ban_id','=',pbId],['trang_thai','=','in-use'],['tinh_trang','=','binh_thuong']],
       ['id','tai_san_id','tinh_trang']);
-    if (!availableAssets.length) {
-      el.innerHTML='<span style="color:#94a3b8">Không có tài sản sẵn sàng cho mượn</span>'; return;
-    }
-    el.innerHTML = availableAssets.map(a=>`
+    renderAvailableAssets(availableAssets);
+  } catch(e) { el.innerHTML=`<span style="color:red">Lỗi: ${e.message}</span>`; }
+}
+
+function renderAvailableAssets(assets) {
+  const el = document.getElementById('nb-tai-san-list');
+  if (!assets.length) {
+    el.innerHTML='<span style="color:#94a3b8">Không có tài sản sẵn sàng cho mượn</span>'; return;
+  }
+  el.innerHTML = assets.map(a=>{
+    const checked = selectedPhanBoIds.includes(a.id) ? 'checked' : '';
+    return `
       <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;
         border-bottom:1px solid #f1f5f9;font-size:13px">
-        <input type="checkbox" value="${a.id}" onchange="toggleAsset(this)"
+        <input type="checkbox" value="${a.id}" onchange="toggleAsset(this)" ${checked}
                style="width:auto;border:none"/>
-        📦 ${a.tai_san_id ? a.tai_san_id[1] : '–'}
-      </label>`).join('');
-  } catch(e) { el.innerHTML=`<span style="color:red">Lỗi: ${e.message}</span>`; }
+        ${a.tai_san_id ? a.tai_san_id[1] : '–'}
+      </label>`;
+  }).join('');
+}
+
+function filterBorrowAssets() {
+  const query = document.getElementById('asset-borrow-search').value.toLowerCase().trim();
+  const filtered = availableAssets.filter(a => {
+    const name = (a.tai_san_id ? a.tai_san_id[1] : '').toLowerCase();
+    return name.includes(query);
+  });
+  renderAvailableAssets(filtered);
 }
 
 function toggleAsset(cb) {
@@ -593,7 +1036,7 @@ async function submitBorrow() {
     await rpc('don_muon_tai_san','action_gui_duyet',[[newId]]);
 
     alert.className='alert alert-success';
-    alert.textContent='✅ Đã tạo và gửi đơn mượn thành công!';
+    alert.textContent='Đã tạo và gửi đơn mượn thành công!';
     // Reset form
     document.getElementById('nb-ten').value='';
     document.getElementById('nb-ly-do').value='';
@@ -605,39 +1048,118 @@ async function submitBorrow() {
     loadMyBorrows();
   } catch(e) {
     alert.className='alert alert-error';
-    alert.textContent='❌ Lỗi: ' + e.message;
+    alert.textContent='Lỗi: ' + e.message;
   }
 }
 
 // ── ĐỔI MẬT KHẨU ─────────────────────
 async function changePassword() {
-  const alert = document.getElementById('pw-alert');
-  alert.className='alert'; alert.textContent='';
+  const alertEl = document.getElementById('pw-alert');
+  alertEl.className='alert'; alertEl.textContent='';
   const old = document.getElementById('pw-old').value;
   const nw  = document.getElementById('pw-new').value;
   const cf  = document.getElementById('pw-confirm').value;
   if (!old||!nw||!cf) {
-    alert.className='alert alert-error'; alert.textContent='Vui lòng điền đầy đủ'; return;
+    alertEl.className='alert alert-error'; alertEl.textContent='Vui lòng điền đầy đủ'; return;
   }
   if (nw !== cf) {
-    alert.className='alert alert-error'; alert.textContent='Mật khẩu mới không khớp'; return;
+    alertEl.className='alert alert-error'; alertEl.textContent='Mật khẩu mới không khớp'; return;
   }
   if (nw.length < 6) {
-    alert.className='alert alert-error'; alert.textContent='Mật khẩu tối thiểu 6 ký tự'; return;
+    alertEl.className='alert alert-error'; alertEl.textContent='Mật khẩu tối thiểu 6 ký tự'; return;
   }
   try {
-    const res = await rpc('nhan_vien','web_change_password',[currentUser.web_username, old, nw]);
-    if (res.success) {
-      alert.className='alert alert-success'; alert.textContent='✅ Đổi mật khẩu thành công!';
+    const result = await rpc('nhan_vien', 'web_change_password', [currentUser.web_username, old, nw]);
+    if (result.success) {
+      alertEl.className='alert alert-success'; alertEl.textContent='Đổi mật khẩu thành công!';
       document.getElementById('pw-old').value='';
       document.getElementById('pw-new').value='';
       document.getElementById('pw-confirm').value='';
     } else {
-      alert.className='alert alert-error'; alert.textContent=res.message;
+      alertEl.className='alert alert-error'; alertEl.textContent=result.message;
     }
   } catch(e) {
-    alert.className='alert alert-error'; alert.textContent='Lỗi: '+e.message;
+    alertEl.className='alert alert-error'; alertEl.textContent='Lỗi: '+e.message;
   }
+}
+
+// ── DETAIL MODAL FUNCTIONS ───────────
+async function openBorrowDetail(id) {
+  const modal = document.getElementById('borrow-modal');
+  const modalBody = document.getElementById('borrow-modal-body');
+  const btnSubmit = document.getElementById('borrow-modal-submit');
+  modalBody.innerHTML = '<p style="color:#94a3b8;text-align:center;padding:20px">Đang tải chi tiết...</p>';
+  btnSubmit.style.display = 'none';
+  modal.classList.add('active');
+
+  try {
+    const details = await rpc('don_muon_tai_san', 'read', [[id], ['ma_don_muon', 'ten_don_muon', 'trang_thai', 'thoi_gian_muon', 'thoi_gian_tra', 'ly_do', 'phan_bo_chon_ids']]);
+    if (!details.length) throw new Error('Không tìm thấy thông tin đơn mượn');
+    const r = details[0];
+
+    const BADGE = {
+      nhap:'badge-gray',cho_duyet:'badge-yellow',da_duyet:'badge-blue',
+      dang_muon:'badge-blue',da_tra:'badge-green',tu_choi:'badge-red',huy:'badge-red'
+    };
+    const LABEL = {
+      nhap:'Nháp',cho_duyet:'Chờ duyệt',da_duyet:'Đã duyệt',
+      dang_muon:'Đang mượn',da_tra:'Đã trả',tu_choi:'Từ chối',huy:'Đã hủy'
+    };
+
+    let assetListHtml = '<p style="color:#94a3b8">Không có tài sản nào</p>';
+    if (r.phan_bo_chon_ids && r.phan_bo_chon_ids.length) {
+      const phanBos = await searchRead('phan_bo_tai_san', [['id', 'in', r.phan_bo_chon_ids]], ['tai_san_id']);
+      if (phanBos.length) {
+        assetListHtml = `<ul style="padding-left:20px;display:flex;flex-direction:column;gap:4px">
+          ${phanBos.map(pb => `<li style="font-size:13px;font-weight:500;color:var(--primary)">${pb.tai_san_id ? pb.tai_san_id[1] : 'Tài sản không tên'}</li>`).join('')}
+        </ul>`;
+      }
+    }
+
+    modalBody.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700">Mã đơn</label><p style="font-weight:700;font-size:14px;margin-top:4px">${r.ma_don_muon}</p></div>
+          <div><label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700">Trạng thái</label><div style="margin-top:4px"><span class="badge ${BADGE[r.trang_thai]}">${LABEL[r.trang_thai]}</span></div></div>
+        </div>
+        <div><label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700">Tên đơn mượn</label><p style="font-weight:700;font-size:14px;margin-top:4px">${r.ten_don_muon}</p></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700">Thời gian mượn</label><p style="font-weight:600;font-size:13px;margin-top:4px">${r.thoi_gian_muon ? r.thoi_gian_muon.replace('T',' ').slice(0,16) : '–'}</p></div>
+          <div><label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700">Hạn trả</label><p style="font-weight:600;font-size:13px;margin-top:4px">${r.thoi_gian_tra ? r.thoi_gian_tra.replace('T',' ').slice(0,16) : '–'}</p></div>
+        </div>
+        <div><label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700">Lý do mượn</label><p style="font-weight:500;font-size:13px;margin-top:4px;white-space:pre-wrap">${r.ly_do || '–'}</p></div>
+        <div>
+          <label style="font-size:11px;color:var(--gray);text-transform:uppercase;font-weight:700;display:block;margin-bottom:8px">Danh sách tài sản mượn</label>
+          ${assetListHtml}
+        </div>
+      </div>
+    `;
+
+    if (r.trang_thai === 'nhap') {
+      btnSubmit.style.display = 'inline-flex';
+      btnSubmit.onclick = async () => {
+        btnSubmit.disabled = true;
+        btnSubmit.textContent = 'Đang gửi...';
+        try {
+          await rpc('don_muon_tai_san', 'action_gui_duyet', [[r.id]]);
+          closeBorrowModal();
+          loadMyBorrows();
+        } catch (e) {
+          alert('Lỗi: ' + e.message);
+        } finally {
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Gửi duyệt đơn';
+        }
+      };
+    }
+
+  } catch(e) {
+    modalBody.innerHTML = `<p style="color:red;text-align:center;padding:20px">Lỗi: ${e.message}</p>`;
+  }
+}
+
+function closeBorrowModal() {
+  document.getElementById('borrow-modal').classList.remove('active');
 }
 
 // ── AUTO LOGIN ────────────────────────
@@ -651,3 +1173,4 @@ async function changePassword() {
 </script>
 </body>
 </html>
+

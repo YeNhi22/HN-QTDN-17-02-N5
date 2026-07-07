@@ -17,7 +17,7 @@ class TaiSan(models.Model):
         ("ma_tai_san_unique", "unique(ma_tai_san)", "Mã tài sản đã tồn tại !"),
     ]
 
-    ma_tai_san = fields.Char('Mã tài sản', required=True)
+    ma_tai_san = fields.Char('Mã tài sản', required=True, copy=False, default='New')
     ten_tai_san = fields.Char('Tên tài sản', required=True)
     ngay_mua_ts = fields.Date('Ngày mua tài sản', required=True)
     don_vi_tien_te = fields.Selection([
@@ -143,6 +143,47 @@ class TaiSan(models.Model):
                 ('phan_bo_tai_san_id', 'in', phan_bo_ids)
             ])
             record.luan_chuyen_ids = luan_chuyen_lines.mapped('luan_chuyen_id')
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'ma_tai_san' in fields_list:
+            res['ma_tai_san'] = self.env['sequence.helper'].get_default_code(
+                'tai_san', 'ma_tai_san', 'tai_san.sequence', 'TS'
+            )
+        return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Tự sinh mã TS001, TS002... khi tạo mới. Sync sequence sau import CSV."""
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_tai_san', 'tai_san.sequence', 'TS', 'tai_san'
+        )
+        records = super().create(vals_list)
+        return records
+
+    @api.model
+    def _sync_ts_sequence(self):
+        """Sync sequence TS sau khi import CSV có mã cố định."""
+        try:
+            seq = self.env['ir.sequence'].search(
+                [('code', '=', 'tai_san.sequence')], limit=1)
+            if not seq:
+                return
+            all_codes = self.sudo().search_read(
+                [('ma_tai_san', '=like', 'TS%')], ['ma_tai_san'])
+            max_num = 0
+            for rec in all_codes:
+                try:
+                    num = int(rec['ma_tai_san'][2:])
+                    if num > max_num:
+                        max_num = num
+                except (ValueError, IndexError):
+                    pass
+            if max_num >= seq.number_next:
+                seq.sudo().write({'number_next': max_num + 1})
+        except Exception:
+            pass
 
     @api.constrains('gia_tri_ban_dau', 'gia_tri_hien_tai')
     def _check_gia_tri(self):

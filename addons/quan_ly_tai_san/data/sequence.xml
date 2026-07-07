@@ -6,7 +6,7 @@
             <field name="name">Tài sản</field>
             <field name="code">tai_san.sequence</field>
             <field name="prefix">TS</field>
-            <field name="padding">5</field>
+            <field name="padding">3</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
@@ -16,7 +16,7 @@
             <field name="name">Đề xuất mua tài sản</field>
             <field name="code">de_xuat_mua_tai_san</field>
             <field name="prefix">DXTS</field>
-            <field name="padding">5</field>
+            <field name="padding">3</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
@@ -26,7 +26,7 @@
             <field name="name">Đơn mượn tài sản</field>
             <field name="code">don_muon_tai_san</field>
             <field name="prefix">DMT</field>
-            <field name="padding">5</field>
+            <field name="padding">3</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
@@ -36,7 +36,7 @@
             <field name="name">Phiếu mượn trả tài sản</field>
             <field name="code">muon_tra_tai_san</field>
             <field name="prefix">MTTS</field>
-            <field name="padding">5</field>
+            <field name="padding">3</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
@@ -46,7 +46,7 @@
             <field name="name">Kiểm kê tài sản</field>
             <field name="code">kiem_ke_tai_san</field>
             <field name="prefix">KKTS</field>
-            <field name="padding">5</field>
+            <field name="padding">3</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
@@ -56,7 +56,16 @@
             <field name="name">Luân chuyển tài sản</field>
             <field name="code">luan_chuyen_tai_san</field>
             <field name="prefix">LCTS</field>
-            <field name="padding">5</field>
+            <field name="padding">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        <!-- Sequence for Danh mục tài sản -->
+        <record id="seq_danh_muc_tai_san" model="ir.sequence">
+            <field name="name">Danh mục tài sản</field>
+            <field name="code">danh_muc_tai_san</field>
+            <field name="prefix">DMTS</field>
+            <field name="padding">3</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>

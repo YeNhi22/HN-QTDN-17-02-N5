@@ -10,7 +10,7 @@ class LuanChuyenTaiSan(models.Model):
         ("ma_phieu_luan_chuyen_unique", "unique(ma_phieu_luan_chuyen)", "Mã phiếu lưu chuyển đã tồn tại !"),
     ]
 
-    ma_phieu_luan_chuyen = fields.Char('Mã phiếu',default='LCTS-', required=True)
+    ma_phieu_luan_chuyen = fields.Char('Mã phiếu', default='New', required=True, copy=False)
     bo_phan_nguon = fields.Many2one('phong_ban', string='Bộ phận hiện tại', required=False, ondelete='set null')
     bo_phan_dich = fields.Many2one('phong_ban', string='Bộ phận chuyển tới', required=False, ondelete='set null')
     thoi_gian_luan_chuyen = fields.Datetime('Thời gian luân chuyển', required=True, default=fields.Datetime.now)
@@ -32,9 +32,21 @@ class LuanChuyenTaiSan(models.Model):
         if self.bo_phan_nguon:
             self.luan_chuyen_line_ids = [(5, 0, 0)]  
     
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'ma_phieu_luan_chuyen' in fields_list:
+            res['ma_phieu_luan_chuyen'] = self.env['sequence.helper'].get_default_code(
+                'luan_chuyen_tai_san', 'ma_phieu_luan_chuyen', 'luan_chuyen_tai_san', 'LCTS'
+            )
+        return res
+
     @api.model_create_multi
-    def create(self, vals):
-        records = super().create(vals)
+    def create(self, vals_list):
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_phieu_luan_chuyen', 'luan_chuyen_tai_san', 'LCTS', 'luan_chuyen_tai_san'
+        )
+        records = super().create(vals_list)
         for record in records:
             if record.luan_chuyen_line_ids:
                 for line in record.luan_chuyen_line_ids:

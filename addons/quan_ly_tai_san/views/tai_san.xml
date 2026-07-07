@@ -10,7 +10,7 @@
 					<sheet>
 						<group>
 							<group string="Thông tin chung">
-								<field name="ma_tai_san" string="Mã tài sản"/>
+								<field name="ma_tai_san" readonly="1" string="Mã tài sản"/>
 								<field name="ten_tai_san" string="Tên tài sản"/>
 								<field name="ngay_mua_ts" string="Ngày mua tài sản"/>
 								<field name="danh_muc_ts_id" string="Loại tài sản"/>

@@ -10,7 +10,7 @@
                     <sheet>
                         <group col="2">
                             <group string="Thông tin chung">
-                                <field name="ma_phieu_luan_chuyen" />
+                                <field name="ma_phieu_luan_chuyen" readonly="1"/>
                                 <field name="thoi_gian_luan_chuyen" string="Thời gian luân chuyển"/>
                             </group>
                             <group string="Thông tin chi tiết">

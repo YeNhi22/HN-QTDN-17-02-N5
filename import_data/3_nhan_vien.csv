@@ -1,8 +1,8 @@
-ma_dinh_danh,ho_ten,ngay_sinh,gioi_tinh,email,so_dien_thoai,que_quan,trang_thai,web_username,web_password_hash,is_web_active
-NV001,Lê Ngọc Minh,2003-05-15,nam,lengocminh@company.com,0901234561,Đà Nẵng,dang_lam,nv001,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
-NV002,Nguyễn Quang Trung,2003-08-22,nam,nguyenquangtrung@company.com,0901234562,Đà Nẵng,dang_lam,nv002,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
-NV003,Đỗ Khánh Hùng,2003-11-10,nam,dokhanhhung@company.com,0901234563,Quảng Nam,dang_lam,nv003,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
-NV004,Nguyễn Vũ Yến Nhi,2003-03-28,nu,nguyenvuyennhi@company.com,0901234564,Đà Nẵng,dang_lam,nv004,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
-NV005,Lê Thị Vân Anh,2002-07-05,nu,lethivananh@company.com,0901234565,Huế,dang_lam,nv005,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
-NV006,Nguyễn Văn Tấn,2002-12-18,nam,nguyenvantan@company.com,0901234566,Quảng Ngãi,dang_lam,nv006,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
-NV007,Nguyễn Quốc Việt,2003-09-30,nam,nguyenquocviet@company.com,0901234567,Đà Nẵng,dang_lam,nv007,8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92,1
+ho_ten,ngay_sinh,gioi_tinh,email,so_dien_thoai,que_quan,trang_thai,is_web_active
+Lê Ngọc Minh,2003-05-15,nam,lengocminh@company.com,0901234561,Đà Nẵng,dang_lam,1
+Nguyễn Quang Trung,2003-08-22,nam,nguyenquangtrung@company.com,0901234562,Đà Nẵng,dang_lam,1
+Đỗ Khánh Hùng,2003-11-10,nam,dokhanhhung@company.com,0901234563,Quảng Nam,dang_lam,1
+Nguyễn Vũ Yến Nhi,2003-03-28,nu,nguyenvuyennhi@company.com,0901234564,Đà Nẵng,dang_lam,1
+Lê Thị Vân Anh,2002-07-05,nu,lethivananh@company.com,0901234565,Huế,dang_lam,1
+Nguyễn Văn Tấn,2002-12-18,nam,nguyenvantan@company.com,0901234566,Quảng Ngãi,dang_lam,1
+Nguyễn Quốc Việt,2003-09-30,nam,nguyenquocviet@company.com,0901234567,Đà Nẵng,dang_lam,1

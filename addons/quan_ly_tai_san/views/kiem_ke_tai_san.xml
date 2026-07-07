@@ -11,7 +11,7 @@
                         <group col="2">
                             <group string="Thông tin chung">
                                 <field name="ds_tai_san_chua_kiem_ke" invisible="1"/>
-                                <field name="ma_phieu_kiem_ke" string="Mã phiếu"/>
+                                <field name="ma_phieu_kiem_ke" readonly="1" string="Mã phiếu"/>
                                 <field name="ten_phieu_kiem_ke" string="Tên phiếu"/>
                                 <field name="phong_ban_id" string="Bộ phận muốn kiểm kê"/>
                                 <field name="nhan_vien_kiem_ke_id" string="Nhân viên kiểm kê"/>

@@ -1,4 +1,4 @@
-nhan_vien_id/ho_ten,phong_ban_id/ten_phong_ban,chuc_vu_id/ten_chuc_vu,time_start,time_end
+nhan_vien_id,phong_ban_id,chuc_vu_id,time_start,time_end
 Lê Ngọc Minh,Phòng Công nghệ thông tin,Trưởng phòng,2022-01-01,2099-12-31
 Nguyễn Quang Trung,Phòng Công nghệ thông tin,Nhân viên,2022-03-01,2099-12-31
 Đỗ Khánh Hùng,Phòng Kỹ thuật,Kỹ thuật viên,2022-06-01,2099-12-31

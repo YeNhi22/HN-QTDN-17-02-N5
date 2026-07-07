@@ -281,60 +281,64 @@ class PheDuyetMuaTaiSan(models.Model):
         pass
     
     # ============ CRUD METHODS ============
-    @api.model
-    def create(self, vals):
-        # Tạo mã phê duyệt
-        if vals.get('ma_phe_duyet', 'New') == 'New':
-            vals['ma_phe_duyet'] = self.env['ir.sequence'].next_by_code('phe_duyet_mua_tai_san') or 'New'
-        
+    @api.model_create_multi
+    def create(self, vals_list):
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_phe_duyet', 'phe_duyet_mua_tai_san', 'PDTS', 'phe_duyet_mua_tai_san'
+        )
         # Xử lý an toàn các trường Many2one - đảm bảo không có giá trị invalid
         many2one_fields = ['de_xuat_mua_id', 'nguoi_de_xuat_id', 'phong_ban_id', 
                            'nguoi_phe_duyet_id', 'tk_tai_san_id', 'tk_nguon_von_id', 
                            'journal_id', 'but_toan_id']
         
-        for field_name in many2one_fields:
-            if field_name in vals:
-                field_value = vals[field_name]
-                # Nếu là False, None, hoặc 0 thì set về False
-                if not field_value or field_value == 0:
-                    vals[field_name] = False
-                # Nếu là tuple (command), giữ nguyên
-                elif isinstance(field_value, (list, tuple)):
-                    continue
-                # Nếu là int, kiểm tra record có tồn tại không
-                elif isinstance(field_value, int):
-                    field_obj = self._fields[field_name]
-                    if hasattr(field_obj, 'comodel_name'):
-                        model_name = field_obj.comodel_name
-                        if model_name and model_name in self.env:
-                            if not self.env[model_name].browse(field_value).exists():
-                                vals[field_name] = False
+        for vals in vals_list:
+            for field_name in many2one_fields:
+                if field_name in vals:
+                    field_value = vals[field_name]
+                    # Nếu là False, None, hoặc 0 thì set về False
+                    if not field_value or field_value == 0:
+                        vals[field_name] = False
+                    # Nếu là tuple (command), giữ nguyên
+                    elif isinstance(field_value, (list, tuple)):
+                        continue
+                    # Nếu là int, kiểm tra record có tồn tại không
+                    elif isinstance(field_value, int):
+                        field_obj = self._fields[field_name]
+                        if hasattr(field_obj, 'comodel_name'):
+                            model_name = field_obj.comodel_name
+                            if model_name and model_name in self.env:
+                                if not self.env[model_name].browse(field_value).exists():
+                                    vals[field_name] = False
+            
+            # Xử lý line_ids an toàn
+            if 'line_ids' in vals:
+                safe_lines = []
+                for line_cmd in vals['line_ids']:
+                    if isinstance(line_cmd, (list, tuple)) and len(line_cmd) >= 3:
+                        cmd, _, line_vals = line_cmd[0], line_cmd[1], line_cmd[2] if len(line_cmd) > 2 else {}
+                        if cmd == 0 and isinstance(line_vals, dict):
+                            # Xử lý an toàn danh_muc_ts_id trong line
+                            if 'danh_muc_ts_id' in line_vals:
+                                dm_val = line_vals['danh_muc_ts_id']
+                                if not dm_val or dm_val == 0:
+                                    line_vals['danh_muc_ts_id'] = False
+                                elif isinstance(dm_val, int):
+                                    if 'danh_muc_tai_san' in self.env:
+                                        if not self.env['danh_muc_tai_san'].browse(dm_val).exists():
+                                            line_vals['danh_muc_ts_id'] = False
+                        safe_lines.append(line_cmd)
+                vals['line_ids'] = safe_lines
         
-        # Xử lý line_ids an toàn
-        if 'line_ids' in vals:
-            safe_lines = []
-            for line_cmd in vals['line_ids']:
-                if isinstance(line_cmd, (list, tuple)) and len(line_cmd) >= 3:
-                    cmd, _, line_vals = line_cmd[0], line_cmd[1], line_cmd[2] if len(line_cmd) > 2 else {}
-                    if cmd == 0 and isinstance(line_vals, dict):
-                        # Xử lý an toàn danh_muc_ts_id trong line
-                        if 'danh_muc_ts_id' in line_vals:
-                            dm_val = line_vals['danh_muc_ts_id']
-                            if not dm_val or dm_val == 0:
-                                line_vals['danh_muc_ts_id'] = False
-                            elif isinstance(dm_val, int):
-                                if 'danh_muc_tai_san' in self.env:
-                                    if not self.env['danh_muc_tai_san'].browse(dm_val).exists():
-                                        line_vals['danh_muc_ts_id'] = False
-                    safe_lines.append(line_cmd)
-            vals['line_ids'] = safe_lines
-        
-        return super(PheDuyetMuaTaiSan, self).create(vals)
+        return super(PheDuyetMuaTaiSan, self).create(vals_list)
     
     @api.model
     def default_get(self, fields_list):
         """Thiết lập giá trị mặc định cho tài khoản"""
         res = super(PheDuyetMuaTaiSan, self).default_get(fields_list)
+        if 'ma_phe_duyet' in fields_list:
+            res['ma_phe_duyet'] = self.env['sequence.helper'].get_default_code(
+                'phe_duyet_mua_tai_san', 'ma_phe_duyet', 'phe_duyet_mua_tai_san', 'PDTS'
+            )
         
         # Tài khoản tài sản cố định mặc định (211)
         if 'tk_tai_san_id' in fields_list:
@@ -652,16 +656,9 @@ class PheDuyetMuaTaiSan(models.Model):
             
             # Tạo từng tài sản theo số lượng
             for i in range(int(line.so_luong)):
-                # Tạo mã tài sản unique – dùng sequence Odoo
-                seq = self.env['ir.sequence'].next_by_code('tai_san.sequence')
-                if not seq:
-                    import datetime
-                    seq = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')[:16]
-                asset_code = f"TS-{seq}"
-                
                 # Chuẩn bị dữ liệu tài sản
                 asset_vals = {
-                    'ma_tai_san': asset_code,
+                    'ma_tai_san': 'New',
                     'ten_tai_san': line.ten_thiet_bi,
                     'ngay_mua_ts': self.ngay_phe_duyet or fields.Date.today(),
                     'don_vi_tien_te': self.don_vi_tien_te or 'vnd',

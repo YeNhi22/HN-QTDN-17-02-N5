@@ -11,7 +11,7 @@
 				<form string="Danh mục TS">
 					<sheet>
 						<group col="4" string="Thông tin chung">
-							<field name="ma_danh_muc_ts" />
+							<field name="ma_danh_muc_ts" readonly="1" />
 							<field name="ten_danh_muc_ts" />
 							<field name="mo_ta_danh_muc_ts" />
 							<field name="so_luong_tong" />

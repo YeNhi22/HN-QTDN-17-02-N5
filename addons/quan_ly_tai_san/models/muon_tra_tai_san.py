@@ -409,6 +409,22 @@ class MuonTraTaiSan(models.Model):
     
     # ============ SCHEDULED ACTION ============
     @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'ma_phieu_muon_tra' in fields_list:
+            res['ma_phieu_muon_tra'] = self.env['sequence.helper'].get_default_code(
+                'muon_tra_tai_san', 'ma_phieu_muon_tra', 'muon_tra_tai_san', 'MTTS'
+            )
+        return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self.env['sequence.helper'].assign_codes_multi(
+            vals_list, 'ma_phieu_muon_tra', 'muon_tra_tai_san', 'MTTS', 'muon_tra_tai_san'
+        )
+        return super(MuonTraTaiSan, self).create(vals_list)
+
+    @api.model
     def _cron_check_qua_han(self):
         """Kiểm tra và cập nhật các phiếu quá hạn"""
         now = fields.Datetime.now()

@@ -9,7 +9,7 @@
                     <sheet>
                         <div class="oe_read_only" style="font-size:25px">Phòng ban</div>
                         <group col="4" string="Thông tin chung">
-                            <field name="ma_chuc_vu"/>
+                            <field name="ma_chuc_vu" readonly="1"/>
                             <field name="ten_chuc_vu"/>
                 
                         </group>

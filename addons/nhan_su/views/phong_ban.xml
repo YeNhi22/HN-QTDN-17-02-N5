@@ -9,7 +9,7 @@
                     <sheet>
                         <div class="oe_read_only" style="font-size:25px">Phòng ban</div>
                         <group col="4" string="Thông tin chung">
-                            <field name="ma_phong_ban" />
+                            <field name="ma_phong_ban" readonly="1"/>
                             <field name="ten_phong_ban" />
 
                         </group>

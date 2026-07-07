@@ -1,7 +1,7 @@
-ma_danh_muc_ts,ten_danh_muc_ts,mo_ta_danh_muc_ts
-LAPTOP,Máy tính xách tay,Laptop và máy tính di động các loại
-PC,Máy tính để bàn,Máy tính bàn và thiết bị ngoại vi
-OFFICE,Thiết bị văn phòng,Máy in - máy chiếu - máy scan
-FURNITURE,Nội thất văn phòng,Bàn ghế - tủ - kệ văn phòng
-VEHICLE,Phương tiện di chuyển,Xe ô tô - xe máy công ty
-NETWORK,Thiết bị mạng,Router - switch - cáp mạng
+ten_danh_muc_ts,mo_ta_danh_muc_ts
+Máy tính xách tay,Laptop và máy tính di động các loại
+Máy tính để bàn,Máy tính bàn và thiết bị ngoại vi
+Thiết bị văn phòng,Máy in - máy chiếu - máy scan
+Nội thất văn phòng,Bàn ghế - tủ - kệ văn phòng
+Phương tiện di chuyển,Xe ô tô - xe máy công ty
+Thiết bị mạng,Router - switch - cáp mạng
